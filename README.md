@@ -1,36 +1,83 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Mi Portafolio Personal
 
-## Getting Started
+> Un portafolio personal interactivo y de una sola página, diseñado para mostrar mis habilidades como desarrollador de software multiplataforma. Construido con un enfoque minimalista, moderno y totalmente responsive.
 
-First, run the development server:
+**Demo en vivo:** [enlace]---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## ✨ Características Principales
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+-   **Diseño Minimalista y Moderno:** Interfaz limpia y centrada en el contenido, con un tema oscuro por defecto.
+-   **Totalmente Responsive:** Adaptado para una experiencia de usuario perfecta en cualquier dispositivo, desde móviles hasta monitores de escritorio.
+-   **Alta Interactividad:**
+    -   Efecto **Spotlight** en las tarjetas que sigue el movimiento del ratón.
+    -   **Carrusel de Proyectos** personalizado con navegación por flechas y puntos.
+    -   **Tooltips** informativos en los iconos de habilidades.
+    -   Animaciones fluidas con **Framer Motion**.
+-   **Navegación Inteligente:** Menú flotante con "Scroll-Spy" que detecta y resalta automáticamente la sección visible en la página.
+-   **Formulario de Contacto Funcional:** Integrado con [Web3Forms](https://web3forms.com/) para recibir mensajes directamente en mi correo electrónico.
+-   **Componentes Reutilizables:** Construido con una arquitectura de componentes limpia y escalable.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🛠️ Stack Tecnológico
 
-## Learn More
+-   **Framework:** [Next.js](https://nextjs.org/) (App Router)
+-   **Lenguaje:** [TypeScript](https://www.typescriptlang.org/)
+-   **Estilos:** [Tailwind CSS](https://tailwindcss.com/)
+-   **Animaciones:** [Framer Motion](https://www.framer.com/motion/)
+-   **Carrusel:** [Embla Carousel](https://www.embla-carousel.com/)
+-   **Iconos:** [Lucide React](https://lucide.dev/) y [React Icons](https://react-icons.github.io/react-icons/)
+-   **Formulario Backend:** [Web3Forms](https://web3forms.com/)
+-   **Despliegue:** [Vercel](https://vercel.com/)
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🚀 Cómo Empezar
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Sigue estos pasos para levantar una copia del proyecto en tu máquina local.
 
-## Deploy on Vercel
+### Prerrequisitos
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+-   Node.js (v18 o superior)
+-   npm, yarn, o pnpm
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Instalación
+
+1.  **Clona el repositorio:**
+    ```bash
+    git clone [https://github.com/ericpastorm/mi-portfolio](https://github.com/ericpastorm/mi-portfolio) 
+    cd mi-portfolio
+    ```
+
+2.  **Instala las dependencias:**
+    ```bash
+    npm install
+    ```
+
+3.  **Configura las variables de entorno:**
+    -   Crea un archivo `.env.local` en la raíz del proyecto.
+    -   Añade tu clave de acceso de Web3Forms como se muestra a continuación:
+    ```
+    NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY=TU_CLAVE_DE_ACCESO_AQUI
+    ```
+
+4.  **Ejecuta el servidor de desarrollo:**
+    ```bash
+    npm run dev
+    ```
+
+Abre [http://localhost:3000](http://localhost:3000) en tu navegador para ver el resultado.
+
+---
+
+## 📜 Licencia
+
+Este proyecto está bajo la Licencia MIT. Consulta el archivo `LICENSE` para más detalles.
+
+---
+
+## 💬 Contacto
+
+Eric Pastor - [ericpastormoreno@gmail.com](mailto:ericpastormoreno@gmail.com)
+
+LinkedIn: [https://linkedin.com/in/eric-pastor-moreno](https://linkedin.com/in/eric-pastor-moreno)
