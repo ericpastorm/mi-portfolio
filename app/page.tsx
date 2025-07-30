@@ -116,10 +116,10 @@ export default function HomePage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-base md:text-lg lg:text-xl text-neutral-200 leading-relaxed space-y-6 max-w-4xl mb-12"
+            className="text-lg md:text-lg lg:text-xl text-neutral-200 leading-relaxed space-y-6 max-w-4xl mb-12"
           >
             <p>
-              Mi trabajo consiste en transformar problemas complejos en soluciones de software eficientes y elegantes. Como desarrollador, mi pasión no solo reside en escribir código limpio, sino en construir la herramienta precisa que cada proyecto necesita. 
+              Mi trabajo consiste en transformar problemas complejos en soluciones de software eficientes y elegantes. Como desarrollador, mi pasión no solo reside en escribir código limpio, sino en construir la herramienta que cada proyecto necesita. 
             </p>
             <p>
               Me mantengo en constante aprendizaje, explorando activamente desde el desarrollo web y móvil hasta la inteligencia artificial, lo que me permite aportar una visión integral y actualizada a cada desafío.
@@ -160,7 +160,7 @@ export default function HomePage() {
               Proyectos
               <span className="h-3 w-3 rounded-full bg-[rgb(var(--accent))]"></span>
             </h2>
-            <p className="text-base md:text-lg lg:text-xl text-neutral-300 mb-12">
+            <p className="text-lg md:text-lg lg:text-xl text-neutral-300 mb-12">
               Una selección de los proyectos en los que he trabajado.
             </p>
           </motion.div>
@@ -187,7 +187,7 @@ export default function HomePage() {
               Contacto
               <span className="h-3 w-3 rounded-full bg-[rgb(var(--accent))]"></span>
             </h2>
-            <p className="text-base md:text-lg lg:text-xl text-neutral-300 mb-12 max-w-3xl">
+            <p className="text-lg md:text-lg lg:text-xl text-neutral-300 mb-12 max-w-3xl">
               ¿Tienes un proyecto en mente o simplemente quieres saludar? Estaré encantado de escucharte. ¡Creemos algo increíble juntos!
             </p>
           </motion.div>
@@ -221,7 +221,7 @@ export default function HomePage() {
                 <form action="https://api.web3forms.com/submit" method="POST" className="p-6 space-y-6">
                   <input type="hidden" name="access_key" value={process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY}  />
 
-                  <h3 className="text-xl font-bold text-white flex items-center gap-2">
+                  <h3 className="text-xl font-bold text-white flex items-center justify-center md:justify-start gap-2">
                     Escríbeme 👋
                   </h3>
                   
