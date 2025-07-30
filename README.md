@@ -2,7 +2,7 @@
 
 > Un portafolio personal interactivo y de una sola página, diseñado para mostrar mis habilidades como desarrollador de software multiplataforma. Construido con un enfoque minimalista, moderno y totalmente responsive.
 
-**Demo en vivo:** [enlace]---
+**Demo en vivo:** [ericpastor.vercel.app](https://ericpastor.vercel.app/)
 
 ## ✨ Características Principales
 
