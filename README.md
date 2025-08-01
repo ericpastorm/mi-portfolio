@@ -1,82 +1,82 @@
-# Mi Portafolio Personal
+# My Personal Portfolio
 
-> Un portafolio personal interactivo y de una sola página, diseñado para mostrar mis habilidades como desarrollador de software multiplataforma. Construido con un enfoque minimalista, moderno y totalmente responsive.
+> An interactive, single-page personal portfolio. Built with a minimalist, modern, and fully responsive approach.
 
-**Demo en vivo:** [ericpastor.vercel.app](https://ericpastor.vercel.app/)
+**Live Demo:** [ericpastor.vercel.app](https://ericpastor.vercel.app/)
 
-## ✨ Características Principales
+## ✨ Key Features
 
--   **Diseño Minimalista y Moderno:** Interfaz limpia y centrada en el contenido, con un tema oscuro por defecto.
--   **Totalmente Responsive:** Adaptado para una experiencia de usuario perfecta en cualquier dispositivo, desde móviles hasta monitores de escritorio.
--   **Alta Interactividad:**
-    -   Efecto **Spotlight** en las tarjetas que sigue el movimiento del ratón.
-    -   **Carrusel de Proyectos** personalizado con navegación por flechas y puntos.
-    -   **Tooltips** informativos en los iconos de habilidades.
-    -   Animaciones fluidas con **Framer Motion**.
--   **Navegación Inteligente:** Menú flotante con "Scroll-Spy" que detecta y resalta automáticamente la sección visible en la página.
--   **Formulario de Contacto Funcional:** Integrado con [Web3Forms](https://web3forms.com/) para recibir mensajes directamente en mi correo electrónico.
--   **Componentes Reutilizables:** Construido con una arquitectura de componentes limpia y escalable.
+-   **Minimalist and Modern Design:** Clean, content-focused interface with a default dark theme.
+-   **Fully Responsive:** Adapted for a seamless user experience on any device, from mobile phones to desktop monitors.
+-   **Highly Interactive:**
+    -   **Spotlight** effect on cards that follows the mouse movement.
+    -   Custom **Project Carousel** with arrow and dot navigation.
+    -   Informative **Tooltips** on skill icons.
+    -   Smooth animations with **Framer Motion**.
+-   **Smart Navigation:** Floating menu with "Scroll-Spy" that automatically detects and highlights the visible section on the page.
+-   **Functional Contact Form:** Integrated with [Web3Forms](https://web3forms.com/) to receive messages directly in my email.
+-   **Reusable Components:** Built with a clean and scalable component architecture.
 
 ---
 
-## 🛠️ Stack Tecnológico
+## 🛠️ Tech Stack
 
 -   **Framework:** [Next.js](https://nextjs.org/) (App Router)
--   **Lenguaje:** [TypeScript](https://www.typescriptlang.org/)
--   **Estilos:** [Tailwind CSS](https://tailwindcss.com/)
--   **Animaciones:** [Framer Motion](https://www.framer.com/motion/)
--   **Carrusel:** [Embla Carousel](https://www.embla-carousel.com/)
--   **Iconos:** [Lucide React](https://lucide.dev/) y [React Icons](https://react-icons.github.io/react-icons/)
--   **Formulario Backend:** [Web3Forms](https://web3forms.com/)
--   **Despliegue:** [Vercel](https://vercel.com/)
+-   **Language:** [TypeScript](https://www.typescriptlang.org/)
+-   **Styling:** [Tailwind CSS](https://tailwindcss.com/)
+-   **Animations:** [Framer Motion](https://www.framer.com/motion/)
+-   **Carousel:** [Embla Carousel](https://www.embla-carousel.com/)
+-   **Icons:** [Lucide React](https://lucide.dev/) & [React Icons](https://react-icons.github.io/react-icons/)
+-   **Form Backend:** [Web3Forms](https://web3forms.com/)
+-   **Deployment:** [Vercel](https://vercel.com/)
 
 ---
 
-## 🚀 Cómo Empezar
+## 🚀 Getting Started
 
-Sigue estos pasos para levantar una copia del proyecto en tu máquina local.
+Follow these steps to get a local copy of the project up and running on your machine.
 
-### Prerrequisitos
+### Prerequisites
 
--   Node.js (v18 o superior)
--   npm, yarn, o pnpm
+-   Node.js (v18 or higher)
+-   npm, yarn, or pnpm
 
-### Instalación
+### Installation
 
-1.  **Clona el repositorio:**
+1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/ericpastorm/mi-portfolio](https://github.com/ericpastorm/mi-portfolio) 
-    cd mi-portfolio
+    git clone [https://github.com/ericpastorm/my-portfolio](https://github.com/ericpastorm/my-portfolio)
+    cd my-portfolio
     ```
 
-2.  **Instala las dependencias:**
+2.  **Install the dependencies:**
     ```bash
     npm install
     ```
 
-3.  **Configura las variables de entorno:**
-    -   Crea un archivo `.env.local` en la raíz del proyecto.
-    -   Añade tu clave de acceso de Web3Forms como se muestra a continuación:
+3.  **Set up environment variables:**
+    -   Create a `.env.local` file in the project root.
+    -   Add your Web3Forms access key as shown below:
     ```
-    NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY=TU_CLAVE_DE_ACCESO_AQUI
+    NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY=YOUR_ACCESS_KEY_HERE
     ```
 
-4.  **Ejecuta el servidor de desarrollo:**
+4.  **Run the development server:**
     ```bash
     npm run dev
     ```
 
-Abre [http://localhost:3000](http://localhost:3000) en tu navegador para ver el resultado.
+Open [http://localhost:3000](http://localhost:3000) in your browser to see the result.
 
 ---
 
-## 📜 Licencia
+## 📜 License
 
-Este proyecto está bajo la Licencia MIT. Consulta el archivo `LICENSE` para más detalles.
+This project is licensed under the MIT License. See the `LICENSE` file for more details.
 
 ---
 
-## 💬 Contacto
+## 💬 Contact
 
 Eric Pastor - [ericpastormoreno@gmail.com](mailto:ericpastormoreno@gmail.com)
 
