@@ -1,4 +1,4 @@
-# My Personal Portfolio
+# My Portfolio
 
 > An interactive, single-page personal portfolio. Built with a minimalist, modern, and fully responsive approach.
 
