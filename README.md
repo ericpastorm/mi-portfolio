@@ -2,7 +2,7 @@
 
 > An interactive, single-page personal portfolio. Built with a minimalist, modern, and fully responsive approach.
 
-**Live Demo:** [ericpastor.vercel.app](https://ericpastor.vercel.app/)
+**Live Demo:** [ericpastor.dev](https://ericpastor.dev/)
 
 ## ✨ Key Features
 
