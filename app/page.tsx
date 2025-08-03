@@ -88,7 +88,7 @@ export default function HomePage() {
               <Linkedin className="h-6 w-6 text-white/60 transition-all duration-300 group-hover:scale-110 group-hover:text-[rgb(var(--accent))]" />
             </motion.a>
             <motion.a
-              href="mailto:ericpastormoreno@gmail.com"
+              href="mailto:hello@ericpastor.dev"
               target="_blank"
               className="group flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-transparent transition-all duration-300 hover:border-[rgb(var(--accent))] hover:bg-[rgb(var(--accent))]/10"
               variants={iconVariants}
@@ -203,7 +203,7 @@ export default function HomePage() {
             <div className="lg:col-span-1 space-y-6">
               <div className="flex items-center gap-4">
                 <Mail className="h-6 w-6 text-[rgb(var(--accent))]" />
-                <a href="mailto:ericpastormoreno@gmail.com" className="text-lg text-neutral-300 hover:text-white transition-colors">ericpastormoreno@gmail.com</a>
+                <a href="mailto:hello@ericpastor.dev" className="text-lg text-neutral-300 hover:text-white transition-colors">hello@ericpastor.dev</a>
               </div>
               <div className="flex items-center gap-4">
                 <Linkedin className="h-6 w-6 text-[rgb(var(--accent))]" />
@@ -270,7 +270,7 @@ export default function HomePage() {
                 <Linkedin className="h-6 w-6" />
               </a>
               <a 
-                href="mailto:ericpastormoreno@gmail.com" 
+                href="mailto:hello@ericpastor.dev" 
                 aria-label="Email" 
                 className="text-neutral-400 hover:text-white transition-colors"
               >
