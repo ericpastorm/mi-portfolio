@@ -19,7 +19,7 @@ export const projectsData: ProjectType[] = [
   {
     title: "Sketchpad",
     description: "Un bloc de dibujo online para dar rienda suelta a tu creatividad. Dibuja, colorea y exporta tus creaciones.",
-    tags: ["React Native", "Tailwind CSS", "Vite"],
+    tags: ["React", "Tailwind CSS", "Vite"],
     demoUrl: "https://ericpastorm.github.io/sketchpad/",
     codeUrl: "https://github.com/ericpastorm/sketchpad",
   },
