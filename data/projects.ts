@@ -24,9 +24,11 @@ export const projectsData: ProjectType[] = [
     codeUrl: "https://github.com/ericpastorm/sketchpad",
   },
   {
-    title: "E-commerce de Ropa",
-    description: "Plataforma de comercio electrónico completa con carrito de compras, pasarela de pago y panel de administración de productos.",
-    tags: ["WooCommerce", "PHP", "JavaScript"],
+    title: "CalculatorX",
+    description: "Una calculadora web moderna y completa con un modo examen interactivo donde practicar matemáticas.",
+    tags: ["Vite", "Tailwind CSS", "JavaScript"],
+    demoUrl: "https://github.com/ericpastorm/CalculatorX",
+    codeUrl: "https://ericpastorm.github.io/CalculatorX/",
   },
   {
     title: "Clon de Spotify",
