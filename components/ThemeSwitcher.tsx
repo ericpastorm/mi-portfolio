@@ -1,33 +1,57 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { Sun, Moon } from 'lucide-react';
 
 export const ThemeSwitcher = () => {
   const [mounted, setMounted] = useState(false);
-  const [theme, setTheme] = useState('dark');
+  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
 
   useEffect(() => {
     setMounted(true); 
-    const storedTheme = localStorage.getItem('theme');
+    const storedTheme = localStorage.getItem('theme') as 'dark' | 'light' | null;
     const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     
-    if (storedTheme) {
-      setTheme(storedTheme);
+    let initialTheme: 'dark' | 'light';
+    if (storedTheme && (storedTheme === 'dark' || storedTheme === 'light')) {
+      initialTheme = storedTheme;
     } else if (systemPrefersDark) {
-      setTheme('dark');
+      initialTheme = 'dark';
     } else {
-      setTheme('light');
+      initialTheme = 'light';
     }
+    
+    setTheme(initialTheme);
+    
+    // Set initial favicon
+    updateFavicon(initialTheme);
   }, []);
 
+  const updateFavicon = (currentTheme: 'dark' | 'light') => {
+    const favicon = document.querySelector('link[rel="icon"]') as HTMLLinkElement;
+    if (favicon) {
+      if (currentTheme === 'light') {
+        favicon.href = '/faviconLight.ico';
+      } else {
+        favicon.href = '/favicon.ico';
+      }
+    }
+  };
+
   useEffect(() => {
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
+    if (theme === 'light') {
+      document.documentElement.classList.add('light');
     } else {
-      document.documentElement.classList.remove('dark');
+      document.documentElement.classList.remove('light');
     }
     localStorage.setItem('theme', theme);
-  }, [theme]);
+    
+    // Update favicon when theme changes
+    if (mounted) {
+      updateFavicon(theme);
+    }
+  }, [theme, mounted]);
 
   const toggleTheme = () => {
     setTheme(theme === 'dark' ? 'light' : 'dark');
@@ -38,16 +62,19 @@ export const ThemeSwitcher = () => {
   }
 
   return (
-    <button
+    <motion.button
       onClick={toggleTheme}
-      className="fixed top-4 right-4 z-50 p-2  bg-[rgb(var(--primary)/0.5)] text-[rgb(var(--text-primary))] border border-[rgb(var(--accent)/0.5)] backdrop-blur-sm transition-all duration-300 ease-in-out hover:scale-110 hover:border-[rgb(var(--accent))]"
+      className="flex h-10 w-10 items-center justify-center rounded-full nav-glass transition-all duration-300 hover:bg-white/10"
       aria-label="Cambiar tema"
+      whileHover={{ y: -5, scale: 1.1 }}
+      whileTap={{ scale: 0.95 }}
+      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
     >
       {theme === 'dark' ? (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+        <Sun className="h-5 w-5 nav-icon" />
       ) : (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+        <Moon className="h-5 w-5 nav-icon" />
       )}
-    </button>
+    </motion.button>
   );
 };

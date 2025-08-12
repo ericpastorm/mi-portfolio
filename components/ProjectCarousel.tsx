@@ -57,7 +57,7 @@ export function ProjectCarousel({ projects }: { projects: ProjectType[] }) {
       {/* Controles: Flechas y Puntos */}
       <div className="flex items-center justify-center gap-8 mt-8">
         <button onClick={scrollPrev} disabled={!prevBtnEnabled} className="disabled:opacity-30">
-          <ArrowLeft className="h-8 w-8 text-white/50 hover:text-white transition-colors" />
+          <ArrowLeft className="h-8 w-8 text-muted hover:text-secondary transition-colors" />
         </button>
 
         <div className="flex items-center gap-3">
@@ -66,14 +66,14 @@ export function ProjectCarousel({ projects }: { projects: ProjectType[] }) {
               key={index}
               onClick={() => scrollTo(index)}
               className={`h-2 w-2 rounded-full transition-all duration-300 ${
-                index === selectedIndex ? "bg-white w-4" : "bg-white/30"
+                index === selectedIndex ? "carousel-dot-active w-4" : "carousel-dot"
               }`}
             />
           ))}
         </div>
 
         <button onClick={scrollNext} disabled={!nextBtnEnabled} className="disabled:opacity-30">
-          <ArrowRight className="h-8 w-8 text-white/50 hover:text-white transition-colors" />
+          <ArrowRight className="h-8 w-8 text-muted hover:text-secondary transition-colors" />
         </button>
       </div>
     </div>

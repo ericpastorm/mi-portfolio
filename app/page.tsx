@@ -46,17 +46,17 @@ export default function HomePage() {
       <main className="flex flex-col items-center justify-start p-4 py-16">
         {/* SECCIÓN 1: HERO */}
         <div ref={homeRef} id="home" className="flex flex-col items-center justify-center text-center min-h-screen -mt-16">
-          <div className="mb-6 flex items-center gap-2 border border-green-400/30 bg-green-900/20 px-3 py-1 rounded-full text-sm text-green-300">
+          <div className="mb-6 flex items-center gap-2 availability-badge px-3 py-1 rounded-full text-sm">
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full status-dot-ping opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 status-dot"></span>
             </span>
             Disponible para proyectos
           </div>
-          <h1 className="text-5xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400 pb-4">
+          <h1 className="text-5xl md:text-7xl font-bold title-gradient pb-4">
             Hola, soy Eric
           </h1>
-          <p className="mt-4 text-lg md:text-xl text-gray-300 max-w-4xl leading-relaxed">
+          <p className="mt-4 text-lg md:text-xl text-muted max-w-4xl leading-relaxed">
             <span className="text-[rgb(var(--accent))] font-medium">
               Desarrollador de software
             </span>{" "}
@@ -74,26 +74,26 @@ export default function HomePage() {
             <motion.a
               href="https://github.com/ericpastorm"
               target="_blank"
-              className="group flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-transparent transition-all duration-300 hover:border-[rgb(var(--accent))] hover:bg-[rgb(var(--accent))]/10"
+              className="group flex h-12 w-12 items-center justify-center rounded-full border border-adaptive bg-transparent transition-all duration-300 hover:border-[rgb(var(--accent))] hover:bg-[rgb(var(--accent))]/10"
               variants={iconVariants}
             >
-              <Github className="h-6 w-6 text-white/60 transition-all duration-300 group-hover:scale-110 group-hover:text-[rgb(var(--accent))]" />
+              <Github className="h-6 w-6 text-muted transition-all duration-300 group-hover:scale-110 group-hover:text-[rgb(var(--accent))]" />
             </motion.a>
             <motion.a
               href="https://linkedin.com/in/eric-pastor-moreno"
               target="_blank"
-              className="group flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-transparent transition-all duration-300 hover:border-[rgb(var(--accent))] hover:bg-[rgb(var(--accent))]/10"
+              className="group flex h-12 w-12 items-center justify-center rounded-full border border-adaptive bg-transparent transition-all duration-300 hover:border-[rgb(var(--accent))] hover:bg-[rgb(var(--accent))]/10"
               variants={iconVariants}
             >
-              <Linkedin className="h-6 w-6 text-white/60 transition-all duration-300 group-hover:scale-110 group-hover:text-[rgb(var(--accent))]" />
+              <Linkedin className="h-6 w-6 text-muted transition-all duration-300 group-hover:scale-110 group-hover:text-[rgb(var(--accent))]" />
             </motion.a>
             <motion.a
               href="mailto:hello@ericpastor.dev"
               target="_blank"
-              className="group flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-transparent transition-all duration-300 hover:border-[rgb(var(--accent))] hover:bg-[rgb(var(--accent))]/10"
+              className="group flex h-12 w-12 items-center justify-center rounded-full border border-adaptive bg-transparent transition-all duration-300 hover:border-[rgb(var(--accent))] hover:bg-[rgb(var(--accent))]/10"
               variants={iconVariants}
             >
-              <Mail className="h-6 w-6 text-white/60 transition-all duration-300 group-hover:scale-110 group-hover:text-[rgb(var(--accent))]" />
+              <Mail className="h-6 w-6 text-muted transition-all duration-300 group-hover:scale-110 group-hover:text-[rgb(var(--accent))]" />
             </motion.a>
           </motion.div>
         </div>
@@ -116,7 +116,7 @@ export default function HomePage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-lg md:text-lg lg:text-xl text-neutral-200 leading-relaxed space-y-6 max-w-4xl mb-12"
+            className="text-lg md:text-lg lg:text-xl text-muted leading-relaxed space-y-6 max-w-4xl mb-12"
           >
             <p>
               Mi trabajo consiste en transformar problemas complejos en soluciones de software eficientes y elegantes. Como desarrollador, mi pasión no solo reside en escribir código limpio, sino en construir la herramienta que cada proyecto necesita. 
@@ -130,7 +130,7 @@ export default function HomePage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-10">
               {skillsData.map((category) => (
                 <div key={category.title}>
-                  <h3 className="text-lg font-medium text-white/90 mb-4 border-l-2 border-[rgb(var(--accent))] pl-3">
+                  <h3 className="text-lg font-medium text-primary mb-4 border-l-2 border-[rgb(var(--accent))] pl-3">
                     {category.title}
                   </h3>
                   <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-6 gap-3">
@@ -160,7 +160,7 @@ export default function HomePage() {
               Proyectos
               <span className="h-3 w-3 rounded-full bg-[rgb(var(--accent))]"></span>
             </h2>
-            <p className="text-lg md:text-lg lg:text-xl text-neutral-300 mb-12">
+            <p className="text-lg md:text-lg lg:text-xl text-secondary mb-12">
               Una selección de los proyectos en los que he trabajado.
             </p>
           </motion.div>
@@ -187,7 +187,7 @@ export default function HomePage() {
               Contacto
               <span className="h-3 w-3 rounded-full bg-[rgb(var(--accent))]"></span>
             </h2>
-            <p className="text-lg md:text-lg lg:text-xl text-neutral-300 mb-12 max-w-3xl">
+            <p className="text-lg md:text-lg lg:text-xl text-secondary mb-12 max-w-3xl">
               ¿Tienes un proyecto en mente o simplemente quieres saludar? Estaré encantado de escucharte. ¡Creemos algo increíble juntos!
             </p>
           </motion.div>
@@ -203,15 +203,15 @@ export default function HomePage() {
             <div className="lg:col-span-1 space-y-6">
               <div className="flex items-center gap-4">
                 <Mail className="h-6 w-6 text-[rgb(var(--accent))]" />
-                <a href="mailto:hello@ericpastor.dev" className="text-lg text-neutral-300 hover:text-white transition-colors">hello@ericpastor.dev</a>
+                <a href="mailto:hello@ericpastor.dev" className="text-lg text-secondary hover:text-primary transition-colors">hello@ericpastor.dev</a>
               </div>
               <div className="flex items-center gap-4">
                 <Linkedin className="h-6 w-6 text-[rgb(var(--accent))]" />
-                <a href="https://linkedin.com/in/eric-pastor-moreno" target="_blank" className="text-lg text-neutral-300 hover:text-white transition-colors">LinkedIn</a>
+                <a href="https://linkedin.com/in/eric-pastor-moreno" target="_blank" className="text-lg text-secondary hover:text-primary transition-colors">LinkedIn</a>
               </div>
               <div className="flex items-center gap-4">
                 <MapPin className="h-6 w-6 text-[rgb(var(--accent))]" />
-                <p className="text-lg text-neutral-300">Tarragona, España</p>
+                <p className="text-lg text-secondary">Tarragona, España</p>
               </div>
             </div>
 
@@ -221,18 +221,18 @@ export default function HomePage() {
                 <form action="https://api.web3forms.com/submit" method="POST" className="p-6 space-y-6">
                   <input type="hidden" name="access_key" value={process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY}  />
 
-                  <h3 className="text-xl font-bold text-white flex items-center justify-center md:justify-start gap-2">
+                  <h3 className="text-xl font-bold text-primary flex items-center justify-center md:justify-start gap-2">
                     Escríbeme 👋
                   </h3>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <input type="text" name="name" placeholder="Tu nombre" required className="w-full bg-zinc-800/50 border border-zinc-700 rounded-lg px-4 py-2 text-white placeholder:text-neutral-400 focus:border-[rgb(var(--accent))] focus:outline-none transition-colors" />
-                    <input type="email" name="email" placeholder="Tu dirección de email" required className="w-full bg-zinc-800/50 border border-zinc-700 rounded-lg px-4 py-2 text-white placeholder:text-neutral-400 focus:border-[rgb(var(--accent))] focus:outline-none transition-colors" />
+                    <input type="text" name="name" placeholder="Tu nombre" required className="w-full form-input rounded-lg px-4 py-2 focus:outline-none transition-colors" />
+                    <input type="email" name="email" placeholder="Tu dirección de email" required className="w-full form-input rounded-lg px-4 py-2 focus:outline-none transition-colors" />
                   </div>
                   
-                  <textarea name="message" placeholder="¿En qué puedo ayudarte?" required rows={4} className="w-full bg-zinc-800/50 border border-zinc-700 rounded-lg px-4 py-2 text-white placeholder:text-neutral-400 focus:border-[rgb(var(--accent))] focus:outline-none transition-colors"></textarea>
+                  <textarea name="message" placeholder="¿En qué puedo ayudarte?" required rows={4} className="w-full form-input rounded-lg px-4 py-2 focus:outline-none transition-colors"></textarea>
 
-                  <button type="submit" className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-white font-bold bg-zinc-800 hover:bg-zinc-700 transition-colors">
+                  <button type="submit" className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-bold btn-primary">
                     <Send className="h-4 w-4" />
                     Enviar Mensaje
                   </button>
@@ -243,7 +243,7 @@ export default function HomePage() {
         </div>
 
       {/* SECCIÓN 5: FOOTER */}
-      <div className="w-full mt-32 border-t border-white/10">
+      <div className="w-full mt-32 border-t border-adaptive">
         <motion.footer
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -257,7 +257,7 @@ export default function HomePage() {
                 href="https://github.com/ericpastorm" 
                 target="_blank" 
                 aria-label="GitHub" 
-                className="text-neutral-400 hover:text-white transition-colors"
+                className="text-subtle hover:text-secondary transition-colors"
               >
                 <Github className="h-6 w-6" />
               </a>
@@ -265,24 +265,24 @@ export default function HomePage() {
                 href="https://linkedin.com/in/eric-pastor-moreno" 
                 target="_blank" 
                 aria-label="LinkedIn" 
-                className="text-neutral-400 hover:text-white transition-colors"
+                className="text-subtle hover:text-secondary transition-colors"
               >
                 <Linkedin className="h-6 w-6" />
               </a>
               <a 
                 href="mailto:hello@ericpastor.dev" 
                 aria-label="Email" 
-                className="text-neutral-400 hover:text-white transition-colors"
+                className="text-subtle hover:text-secondary transition-colors"
               >
                 <Mail className="h-6 w-6" />
               </a>
             </div>
 
-            <p className="text-sm text-neutral-500">
+            <p className="text-sm text-muted">
               Diseñado y desarrollado por Eric Pastor
             </p>
 
-            <p className="text-xs text-neutral-600">
+            <p className="text-xs text-subtle">
               © {new Date().getFullYear()} Eric Pastor. Todos los derechos reservados.
             </p>
           </div>

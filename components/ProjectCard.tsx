@@ -9,11 +9,11 @@ export function ProjectCard({ project }: { project: ProjectType }) {
     <SpotlightCard className="group/spotlight h-full border-[rgb(var(--accent))]/30">
       <div className="flex flex-col justify-between h-full p-6">
         <div>
-          <h3 className="text-xl font-bold text-white mb-2">{project.title}</h3>
-          <p className="text-neutral-300 mb-4">{project.description}</p>
+          <h3 className="text-xl font-bold text-primary mb-2">{project.title}</h3>
+          <p className="text-secondary mb-4">{project.description}</p>
           <div className="flex flex-wrap gap-2 mb-6">
             {project.tags.map((tag) => (
-              <span key={tag} className="px-2 py-1 text-xs font-medium text-neutral-300 bg-white/10 rounded">
+              <span key={tag} className="px-2 py-1 text-xs font-medium project-tag rounded">
                 {tag}
               </span>
             ))}
@@ -27,7 +27,7 @@ export function ProjectCard({ project }: { project: ProjectType }) {
             </a>
           )}
           {project.codeUrl && (
-            <a href={project.codeUrl} target="_blank" className="flex items-center gap-2 px-4 py-2 rounded-lg text-white bg-zinc-800 hover:bg-zinc-700 transition-colors">
+            <a href={project.codeUrl} target="_blank" className="flex items-center gap-2 px-4 py-2 rounded-lg panel-background transition-colors">
               <Github className="h-4 w-4" />
               View Code
             </a>

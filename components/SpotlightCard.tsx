@@ -28,7 +28,7 @@ export function SpotlightCard({ children, className = "" }: SpotlightCardProps) 
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-100px" }}
       transition={{ duration: 0.5 }}
-      className={`relative p-6 md:p-8 rounded-2xl border bg-zinc-900/70 backdrop-blur-sm overflow-hidden ${className}`}
+      className={`relative p-6 md:p-8 rounded-2xl border card-background backdrop-blur-sm overflow-hidden ${className}`}
     >
       <div
         className="absolute inset-0 transition-opacity duration-300 opacity-0 group-hover/spotlight:opacity-100"
