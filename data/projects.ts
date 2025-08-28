@@ -10,6 +10,12 @@ export type ProjectType = {
 
 export const projectsData: ProjectType[] = [
   {
+    title: "ICOREVEN",
+    description: "Desarrollo de una web corporativa con un enfoque dual: atraer inversores para su modelo de negocio y captar clientes para sus servicios de reforma, todo optimizado con SEO y copywriting.",
+    tags: ["Wordpress", "Elementor", "SEO", "Copywriting"],
+    demoUrl: "https://icoreven.com/", 
+  },
+  {
     title: "Mi Portfolio Personal",
     description: "Una web personal para mostrar mis habilidades y proyectos, construida con las últimas tecnologías del ecosistema de React.",
     tags: ["React", "Next.js", "Tailwind CSS", "TypeScript"],
@@ -29,11 +35,5 @@ export const projectsData: ProjectType[] = [
     tags: ["Vite", "Tailwind CSS", "JavaScript"],
     demoUrl: "https://github.com/ericpastorm/CalculatorX",
     codeUrl: "https://ericpastorm.github.io/CalculatorX/",
-  },
-  {
-    title: "Clon de Spotify",
-    description: "Un proyecto para practicar el consumo de APIs y la gestión de estado global en una aplicación de música.",
-    tags: ["React", "Spotify API", "Zustand"],
-    codeUrl: "#",
   },
 ];
