@@ -1,0 +1,65 @@
+{
+  "navigation": {
+    "home": "Inicio",
+    "about": "Sobre Mí",
+    "projects": "Proyectos",
+    "contact": "Contacto"
+  },
+  "hero": {
+    "availability": "Disponible para proyectos",
+    "greeting": "Hola, soy Eric",
+    "description": "<accent>Desarrollador de software</accent> multiplataforma, dedicado a transformar ideas en experiencias interactivas para <accent>cualquier pantalla que imagines</accent>.",
+    "changeTheme": "Cambiar tema"
+  },
+  "about": {
+    "title": "Sobre Mí",
+    "description1": "Mi trabajo consiste en transformar problemas complejos en soluciones de software eficientes y elegantes. Como desarrollador, mi pasión no solo reside en escribir código limpio, sino en construir la herramienta que cada proyecto necesita.",
+    "description2": "Me mantengo en constante aprendizaje, explorando activamente desde el desarrollo web y móvil hasta la inteligencia artificial, lo que me permite aportar una visión integral y actualizada a cada desafío."
+  },
+  "skills": {
+    "frontend": "Frontend",
+    "backend": "Backend",
+    "databases": "Bases de Datos",
+    "toolsAndDesign": "Herramientas y Diseño"
+  },
+  "projects": {
+    "title": "Proyectos",
+    "subtitle": "Una selección de los proyectos en los que he trabajado.",
+    "liveDemo": "Ver Software",
+    "viewCode": "Ver Código",
+    "items": {
+      "icoreven": {
+        "title": "ICOREVEN",
+        "description": "Desarrollo de una web corporativa con un enfoque dual: atraer inversores para su modelo de negocio y captar clientes para sus servicios de reforma, todo optimizado con SEO y copywriting."
+      },
+      "portfolio": {
+        "title": "Mi Portfolio Personal",
+        "description": "Una web personal para mostrar mis habilidades y proyectos, construida con las últimas tecnologías del ecosistema de React."
+      },
+      "sketchpad": {
+        "title": "Sketchpad",
+        "description": "Un bloc de dibujo online para dar rienda suelta a tu creatividad. Dibuja, colorea y exporta tus creaciones."
+      },
+      "calculatorx": {
+        "title": "CalculatorX",
+        "description": "Una calculadora web moderna y completa con un modo examen interactivo donde practicar matemáticas."
+      }
+    }
+  },
+  "contact": {
+    "title": "Contacto",
+    "description": "¿Tienes un proyecto en mente o simplemente quieres saludar? Estaré encantado de escucharte. ¡Creemos algo increíble juntos!",
+    "location": "Tarragona, España",
+    "form": {
+      "title": "Escríbeme 👋",
+      "name": "Tu nombre",
+      "email": "Tu dirección de email",
+      "message": "¿En qué puedo ayudarte?",
+      "send": "Enviar Mensaje"
+    }
+  },
+  "footer": {
+    "designed": "Diseñado y desarrollado por Eric Pastor",
+    "rights": "Todos los derechos reservados."
+  }
+}

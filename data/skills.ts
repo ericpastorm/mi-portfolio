@@ -13,13 +13,13 @@ export type Skill = {
 };
 
 export type SkillCategory = {
-  title: string;
+  titleKey: string; // Changed from 'title' to 'titleKey' for i18n
   skills: Skill[];
 };
 
 export const skillsData: SkillCategory[] = [
   {
-    title: "Frontend",
+    titleKey: "frontend",
     skills: [
       { name: "HTML5", icon: SiHtml5, color: "#E34F26" },
       { name: "CSS3", icon: SiCss3, color: "#1572B6" },
@@ -30,7 +30,7 @@ export const skillsData: SkillCategory[] = [
     ],
   },
   {
-    title: "Backend",
+    titleKey: "backend",
     skills: [
       { name: "JavaScript", icon: SiJavascript, color: "#F7DF1E" },
       { name: "TypeScript", icon: SiTypescript, color: "#3a79c1" },
@@ -42,7 +42,7 @@ export const skillsData: SkillCategory[] = [
     ],
   },
   {
-    title: "Bases de Datos",
+    titleKey: "databases",
     skills: [
         { name: "Postgresql", icon: SiPostgresql, color: "#37618f" },
         { name: "MongoDB", icon: SiMongodb, color: "#47A248" },
@@ -51,7 +51,7 @@ export const skillsData: SkillCategory[] = [
     ],
   },
   {
-    title: "Herramientas y Diseño",
+    titleKey: "toolsAndDesign",
     skills: [
       { name: "Git", icon: SiGit, color: "#F05032" },
       { name: "GitHub", icon: SiGithub, color: "#181717" },

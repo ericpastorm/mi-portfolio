@@ -1,14 +1,28 @@
 // components/ProjectCarousel.tsx
-
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
 import useEmblaCarousel from "embla-carousel-react";
-import { ProjectType } from "@/data/projects";
 import { ProjectCard } from "./ProjectCard";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import type { ProjectItem } from "@/types";
 
-export function ProjectCarousel({ projects }: { projects: ProjectType[] }) {
+// Tipos de datos que el componente necesita
+type ProjectData = {
+  title: string;
+  description: string;
+  tags: string[];
+  demoUrl?: string | undefined;
+  codeUrl?: string | undefined;
+}
+
+type CardLabels = {
+  liveDemo: string;
+  viewCode: string;
+}
+
+// El componente recibe el array de proyectos y los textos para los botones
+export function ProjectCarousel({ projects, labels }: { projects: ProjectItem[]; labels: CardLabels }) {
   const [emblaRef, emblaApi] = useEmblaCarousel({
     align: "start",
     containScroll: "trimSnaps",
@@ -29,7 +43,7 @@ export function ProjectCarousel({ projects }: { projects: ProjectType[] }) {
     setSelectedIndex(emblaApi.selectedScrollSnap());
     setPrevBtnEnabled(emblaApi.canScrollPrev());
     setNextBtnEnabled(emblaApi.canScrollNext());
-  }, [emblaApi, setSelectedIndex]);
+  }, [emblaApi]);
 
   useEffect(() => {
     if (!emblaApi) return;
@@ -37,29 +51,24 @@ export function ProjectCarousel({ projects }: { projects: ProjectType[] }) {
     setScrollSnaps(emblaApi.scrollSnapList());
     emblaApi.on("select", onSelect);
     emblaApi.on("reInit", onSelect);
-  }, [emblaApi, setScrollSnaps, onSelect]);
+  }, [emblaApi, onSelect]);
 
   return (
     <div>
-      {/* 👇 1. AÑADIMOS EL MARGEN NEGATIVO AQUÍ 👇 */}
-      <div className="overflow-hidden -ml-4" ref={emblaRef}>
-        
-        {/* 👇 2. Y LO QUITAMOS DE AQUÍ 👇 */}
-        <div className="flex">
+      <div className="overflow-hidden" ref={emblaRef}>
+        <div className="flex -ml-4">
           {projects.map((project, index) => (
             <div key={index} className="flex-shrink-0 flex-grow-0 basis-full md:basis-1/2 xl:basis-[40%] pl-4">
-              <ProjectCard project={project} />
+              <ProjectCard project={project} labels={labels} />
             </div>
           ))}
         </div>
       </div>
 
-      {/* Controles: Flechas y Puntos */}
       <div className="flex items-center justify-center gap-8 mt-8">
         <button onClick={scrollPrev} disabled={!prevBtnEnabled} className="disabled:opacity-30">
           <ArrowLeft className="h-8 w-8 text-muted hover:text-secondary transition-colors" />
         </button>
-
         <div className="flex items-center gap-3">
           {scrollSnaps.map((_, index) => (
             <button
@@ -71,7 +80,6 @@ export function ProjectCarousel({ projects }: { projects: ProjectType[] }) {
             />
           ))}
         </div>
-
         <button onClick={scrollNext} disabled={!nextBtnEnabled} className="disabled:opacity-30">
           <ArrowRight className="h-8 w-8 text-muted hover:text-secondary transition-colors" />
         </button>

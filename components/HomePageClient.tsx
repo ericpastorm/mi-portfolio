@@ -1,22 +1,22 @@
-// app/page.tsx
-
+// components/HomePageClient.tsx
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion"; 
-import { Github, Linkedin, Mail, MapPin, Send } from "lucide-react"; 
-import AnimatedSection from "@/components/AnimatedSection";
-import { NavigationMenu } from "@/components/NavigationMenu";
-import { SpotlightCard } from "@/components/SpotlightCard";
+import { motion } from "framer-motion";
+import { Github, Linkedin, Mail, MapPin, Send } from "lucide-react";
 import { useInView } from "react-intersection-observer";
 import { skillsData } from '@/data/skills';
+import { NavigationMenu } from "@/components/NavigationMenu";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { SpotlightCard } from "@/components/SpotlightCard";
 import { SkillCard } from '@/components/SkillCard';
-import { projectsData } from "@/data/projects";
 import { ProjectCarousel } from "@/components/ProjectCarousel";
+import { ProjectType } from "@/data/projects";
+import type { Dictionary } from "@/types";
 
-export default function HomePage() {
+export function HomePageClient({ dict }: { dict: Dictionary }) {
   const [activeSection, setActiveSection] = useState("#home");
-  const options = { threshold: 0.3 }; // Umbral para considerar una sección como "visible"
+  const options = { threshold: 0.3 };
   const { ref: homeRef, inView: homeInView } = useInView(options);
   const { ref: aboutRef, inView: aboutInView } = useInView(options);
   const { ref: projectsRef, inView: projectsInView } = useInView(options);
@@ -36,34 +36,54 @@ export default function HomePage() {
       transition: { staggerChildren: 0.2, delayChildren: 0.5 },
     },
   };
+
   const iconVariants = {
     hidden: { y: 20, opacity: 0 },
     visible: { y: 0, opacity: 1 },
   };
 
+  const renderWithAccent = (text: string) => {
+    return text.split(/(<accent>.*?<\/accent>)/).map((part, index) => {
+      if (part.startsWith('<accent>') && part.endsWith('</accent>')) {
+        const content = part.replace(/<\/?accent>/g, '');
+        return (
+          <span key={index} className="text-[rgb(var(--accent))] font-medium">
+            {content}
+          </span>
+        );
+      }
+      return part;
+    });
+  };
+
+  const projectsArray = Object.values(dict.projects.items).map((project) => ({
+    ...project,
+    tags: project.tags ?? [],
+    demoUrl: project.demoUrl ?? undefined,
+    codeUrl: project.codeUrl ?? undefined,
+  }));
+  const projectLabels = {
+    liveDemo: dict.projects.liveDemo,
+    viewCode: dict.projects.viewCode,
+  };
+
   return (
     <>
       <main className="flex flex-col items-center justify-start p-4 py-16">
-        {/* SECCIÓN 1: HERO */}
+        {/* HERO SECTION */}
         <div ref={homeRef} id="home" className="flex flex-col items-center justify-center text-center min-h-screen -mt-16">
           <div className="mb-6 flex items-center gap-2 availability-badge px-3 py-1 rounded-full text-sm">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full status-dot-ping opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 status-dot"></span>
             </span>
-            Disponible para proyectos
+            {dict.hero.availability}
           </div>
           <h1 className="text-5xl md:text-7xl font-bold title-gradient pb-4">
-            Hola, soy Eric
+            {dict.hero.greeting}
           </h1>
           <p className="mt-4 text-lg md:text-xl text-muted max-w-4xl leading-relaxed">
-            <span className="text-[rgb(var(--accent))] font-medium">
-              Desarrollador de software
-            </span>{" "}
-            multiplataforma, dedicado a transformar ideas en experiencias interactivas para{" "}
-            <span className="text-[rgb(var(--accent))] font-medium">
-              cualquier pantalla que imagines
-            </span>.
+            {renderWithAccent(dict.hero.description)}
           </p>
           <motion.div
             className="mt-8 flex gap-4"
@@ -98,7 +118,7 @@ export default function HomePage() {
           </motion.div>
         </div>
 
-        {/* SECCIÓN 2: SOBRE MÍ Y HABILIDADES*/}
+        {/* ABOUT SECTION */}
         <div ref={aboutRef} id="about" className="w-full max-w-5xl px-4 mt-32">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
@@ -107,7 +127,7 @@ export default function HomePage() {
             transition={{ duration: 0.5 }}
             className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold flex items-baseline gap-3 mb-8"
           >
-            Sobre Mí
+            {dict.about.title}
             <span className="h-3 w-3 rounded-full bg-[rgb(var(--accent))]"></span>
           </motion.h2>
 
@@ -118,20 +138,16 @@ export default function HomePage() {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="text-lg md:text-lg lg:text-xl text-muted leading-relaxed space-y-6 max-w-4xl mb-12"
           >
-            <p>
-              Mi trabajo consiste en transformar problemas complejos en soluciones de software eficientes y elegantes. Como desarrollador, mi pasión no solo reside en escribir código limpio, sino en construir la herramienta que cada proyecto necesita. 
-            </p>
-            <p>
-              Me mantengo en constante aprendizaje, explorando activamente desde el desarrollo web y móvil hasta la inteligencia artificial, lo que me permite aportar una visión integral y actualizada a cada desafío.
-            </p>
+            <p>{dict.about.description1}</p>
+            <p>{dict.about.description2}</p>
           </motion.div>
 
           <SpotlightCard className="group/spotlight border-[rgb(var(--accent))]/30">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-10">
               {skillsData.map((category) => (
-                <div key={category.title}>
+                <div key={category.titleKey}>
                   <h3 className="text-lg font-medium text-primary mb-4 border-l-2 border-[rgb(var(--accent))] pl-3">
-                    {category.title}
+                    {dict.skills[category.titleKey]}
                   </h3>
                   <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-6 gap-3">
                     {category.skills.map((skill) => (
@@ -148,7 +164,8 @@ export default function HomePage() {
             </div>
           </SpotlightCard>
         </div>
-        {/* SECCIÓN 3: PROYECTOS */}
+
+        {/* PROJECTS SECTION */}
         <div ref={projectsRef} id="projects" className="w-full max-w-5xl mt-32">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -157,11 +174,11 @@ export default function HomePage() {
             transition={{ duration: 0.5 }}
           >
             <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold flex items-baseline gap-3 mb-4">
-              Proyectos
+              {dict.projects.title}
               <span className="h-3 w-3 rounded-full bg-[rgb(var(--accent))]"></span>
             </h2>
             <p className="text-lg md:text-lg lg:text-xl text-secondary mb-12">
-              Una selección de los proyectos en los que he trabajado.
+              {dict.projects.subtitle}
             </p>
           </motion.div>
           
@@ -171,11 +188,11 @@ export default function HomePage() {
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <ProjectCarousel projects={projectsData} />
+            <ProjectCarousel projects={projectsArray} labels={projectLabels} />
           </motion.div>
         </div>
 
-        {/* SECCIÓN 4: CONTACTO*/}
+        {/* CONTACT SECTION */}
         <div ref={contactRef} id="contact" className="w-full max-w-5xl px-4 mt-32">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -184,11 +201,11 @@ export default function HomePage() {
             transition={{ duration: 0.5 }}
           >
             <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold flex items-baseline gap-3 mb-4">
-              Contacto
+              {dict.contact.title}
               <span className="h-3 w-3 rounded-full bg-[rgb(var(--accent))]"></span>
             </h2>
             <p className="text-lg md:text-lg lg:text-xl text-secondary mb-12 max-w-3xl">
-              ¿Tienes un proyecto en mente o simplemente quieres saludar? Estaré encantado de escucharte. ¡Creemos algo increíble juntos!
+              {dict.contact.description}
             </p>
           </motion.div>
 
@@ -199,7 +216,6 @@ export default function HomePage() {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="grid grid-cols-1 lg:grid-cols-3 gap-8"
           >
-            {/* Columna Izquierda: Datos de Contacto */}
             <div className="lg:col-span-1 space-y-6">
               <div className="flex items-center gap-4">
                 <Mail className="h-6 w-6 text-[rgb(var(--accent))]" />
@@ -211,30 +227,29 @@ export default function HomePage() {
               </div>
               <div className="flex items-center gap-4">
                 <MapPin className="h-6 w-6 text-[rgb(var(--accent))]" />
-                <p className="text-lg text-secondary">Tarragona, España</p>
+                <p className="text-lg text-secondary">{dict.contact.location}</p>
               </div>
             </div>
 
-            {/* Columna Derecha: Formulario */}
             <div className="lg:col-span-2">
               <SpotlightCard className="group/spotlight border-[rgb(var(--accent))]/30">
                 <form action="https://api.web3forms.com/submit" method="POST" className="p-6 space-y-6">
-                  <input type="hidden" name="access_key" value={process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY}  />
+                  <input type="hidden" name="access_key" value={process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY} />
 
                   <h3 className="text-xl font-bold text-primary flex items-center justify-center md:justify-start gap-2">
-                    Escríbeme 👋
+                    {dict.contact.form.title}
                   </h3>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <input type="text" name="name" placeholder="Tu nombre" required className="w-full form-input rounded-lg px-4 py-2 focus:outline-none transition-colors" />
-                    <input type="email" name="email" placeholder="Tu dirección de email" required className="w-full form-input rounded-lg px-4 py-2 focus:outline-none transition-colors" />
+                    <input type="text" name="name" placeholder={dict.contact.form.name} required className="w-full form-input rounded-lg px-4 py-2 focus:outline-none transition-colors" />
+                    <input type="email" name="email" placeholder={dict.contact.form.email} required className="w-full form-input rounded-lg px-4 py-2 focus:outline-none transition-colors" />
                   </div>
                   
-                  <textarea name="message" placeholder="¿En qué puedo ayudarte?" required rows={4} className="w-full form-input rounded-lg px-4 py-2 focus:outline-none transition-colors"></textarea>
+                  <textarea name="message" placeholder={dict.contact.form.message} required rows={4} className="w-full form-input rounded-lg px-4 py-2 focus:outline-none transition-colors"></textarea>
 
                   <button type="submit" className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-bold btn-primary">
                     <Send className="h-4 w-4" />
-                    Enviar Mensaje
+                    {dict.contact.form.send}
                   </button>
                 </form>
               </SpotlightCard>
@@ -242,55 +257,60 @@ export default function HomePage() {
           </motion.div>
         </div>
 
-      {/* SECCIÓN 5: FOOTER */}
-      <div className="w-full mt-32 border-t border-adaptive">
-        <motion.footer
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="w-full max-w-5xl mx-auto px-4 py-8"
-        >
-          <div className="flex flex-col items-center gap-6 text-center">
-            <div className="flex items-center gap-6">
-              <a 
-                href="https://github.com/ericpastorm" 
-                target="_blank" 
-                aria-label="GitHub" 
-                className="text-subtle hover:text-secondary transition-colors"
-              >
-                <Github className="h-6 w-6" />
-              </a>
-              <a 
-                href="https://linkedin.com/in/eric-pastor-moreno" 
-                target="_blank" 
-                aria-label="LinkedIn" 
-                className="text-subtle hover:text-secondary transition-colors"
-              >
-                <Linkedin className="h-6 w-6" />
-              </a>
-              <a 
-                href="mailto:hello@ericpastor.dev" 
-                aria-label="Email" 
-                className="text-subtle hover:text-secondary transition-colors"
-              >
-                <Mail className="h-6 w-6" />
-              </a>
+        {/* FOOTER SECTION */}
+        <div className="w-full mt-32 border-t border-adaptive">
+          <motion.footer
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="w-full max-w-5xl mx-auto px-4 py-8"
+          >
+            <div className="flex flex-col items-center gap-6 text-center">
+              <div className="flex items-center gap-6">
+                <a 
+                  href="https://github.com/ericpastorm" 
+                  target="_blank" 
+                  aria-label="GitHub" 
+                  className="text-subtle hover:text-secondary transition-colors"
+                >
+                  <Github className="h-6 w-6" />
+                </a>
+                <a 
+                  href="https://linkedin.com/in/eric-pastor-moreno" 
+                  target="_blank" 
+                  aria-label="LinkedIn" 
+                  className="text-subtle hover:text-secondary transition-colors"
+                >
+                  <Linkedin className="h-6 w-6" />
+                </a>
+                <a 
+                  href="mailto:hello@ericpastor.dev" 
+                  aria-label="Email" 
+                  className="text-subtle hover:text-secondary transition-colors"
+                >
+                  <Mail className="h-6 w-6" />
+                </a>
+              </div>
+
+              <p className="text-sm text-muted">
+                {dict.footer.designed}
+              </p>
+
+              <p className="text-xs text-subtle">
+                © {new Date().getFullYear()} Eric Pastor. {dict.footer.rights}
+              </p>
             </div>
-
-            <p className="text-sm text-muted">
-              Diseñado y desarrollado por Eric Pastor
-            </p>
-
-            <p className="text-xs text-subtle">
-              © {new Date().getFullYear()} Eric Pastor. Todos los derechos reservados.
-            </p>
-          </div>
-        </motion.footer>
-      </div>
+          </motion.footer>
+        </div>
       </main>
 
-      <NavigationMenu activeSection={activeSection} />
+      <NavigationMenu 
+        activeSection={activeSection} 
+        translations={dict.navigation} 
+        themeSwitcherLabel={dict.hero.changeTheme} 
+      />
+      <LanguageSwitcher />
     </>
   );
 }

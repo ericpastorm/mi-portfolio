@@ -1,13 +1,19 @@
+// components/ThemeSwitcher.tsx
 "use client";
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Sun, Moon } from 'lucide-react';
+// 1. Eliminamos la importación de `next-intl`.
 
-export const ThemeSwitcher = () => {
+// 2. Añadimos `ariaLabel` a los props del componente.
+export const ThemeSwitcher = ({ ariaLabel }: { ariaLabel: string }) => {
   const [mounted, setMounted] = useState(false);
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+  // 3. Eliminamos la línea `const t = useTranslations();`.
 
+  // El resto de la lógica del componente (useEffect, toggleTheme, etc.)
+  // se queda exactamente igual, no necesita cambios.
   useEffect(() => {
     setMounted(true); 
     const storedTheme = localStorage.getItem('theme') as 'dark' | 'light' | null;
@@ -23,19 +29,13 @@ export const ThemeSwitcher = () => {
     }
     
     setTheme(initialTheme);
-    
-    // Set initial favicon
     updateFavicon(initialTheme);
   }, []);
 
   const updateFavicon = (currentTheme: 'dark' | 'light') => {
     const favicon = document.querySelector('link[rel="icon"]') as HTMLLinkElement;
     if (favicon) {
-      if (currentTheme === 'light') {
-        favicon.href = '/faviconLight.ico';
-      } else {
-        favicon.href = '/favicon.ico';
-      }
+      favicon.href = currentTheme === 'light' ? '/faviconLight.ico' : '/favicon.ico';
     }
   };
 
@@ -47,7 +47,6 @@ export const ThemeSwitcher = () => {
     }
     localStorage.setItem('theme', theme);
     
-    // Update favicon when theme changes
     if (mounted) {
       updateFavicon(theme);
     }
@@ -65,7 +64,8 @@ export const ThemeSwitcher = () => {
     <motion.button
       onClick={toggleTheme}
       className="flex h-10 w-10 items-center justify-center rounded-full nav-glass transition-all duration-300 hover:bg-white/10"
-      aria-label="Cambiar tema"
+      // 4. Usamos el prop `ariaLabel` que hemos recibido.
+      aria-label={ariaLabel}
       whileHover={{ y: -5, scale: 1.1 }}
       whileTap={{ scale: 0.95 }}
       transition={{ type: 'spring', stiffness: 300, damping: 20 }}

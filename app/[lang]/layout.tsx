@@ -1,13 +1,12 @@
-// app/layout.tsx
-
+// app/[lang]/layout.tsx
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import "./globals.css";
+import "../globals.css";
 import localFont from "next/font/local";
 
 const switzer = localFont({
-  src: './fonts/Switzer-Variable.woff2',
+  src: '../fonts/Switzer-Variable.woff2',
   display: 'swap',
   variable: '--font-switzer',
 });
@@ -17,9 +16,20 @@ export const metadata: Metadata = {
   description: "Mi portfolio",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode; }) {
+type Props = {
+  children: React.ReactNode;
+  params: Promise<{ lang: string }>;
+};
+
+// 👇 CORRECCIÓN AQUÍ: Recibimos `params` completo
+export default async function RootLayout({ 
+  children, 
+  params 
+}: Props) {
+  const { lang } = await params; // Resolve the promise to access `lang`
+
   return (
-    <html lang="en" suppressHydrationWarning className={switzer.variable}> 
+    <html lang={lang} suppressHydrationWarning className={switzer.variable}> 
       <body>
         {children}
         <SpeedInsights />

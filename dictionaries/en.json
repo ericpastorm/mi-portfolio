@@ -1,0 +1,65 @@
+{
+  "navigation": {
+    "home": "Home",
+    "about": "About",
+    "projects": "Projects",
+    "contact": "Contact"
+  },
+  "hero": {
+    "availability": "Available for projects",
+    "greeting": "Hello, I'm Eric",
+    "description": "<accent>Software developer</accent> multiplatform, dedicated to transforming ideas into interactive experiences for <accent>any screen you can imagine</accent>.",
+    "changeTheme": "Change theme"
+  },
+  "about": {
+    "title": "About Me",
+    "description1": "My job consists of transforming complex problems into efficient and elegant software solutions. As a developer, my passion doesn't only lie in writing clean code, but in building the tool that each project needs.",
+    "description2": "I keep myself in constant learning, actively exploring from web and mobile development to artificial intelligence, which allows me to bring a comprehensive and updated vision to each challenge."
+  },
+  "skills": {
+    "frontend": "Frontend",
+    "backend": "Backend",
+    "databases": "Databases",
+    "toolsAndDesign": "Tools and Design"
+  },
+  "projects": {
+    "title": "Projects",
+    "subtitle": "A selection of projects I've worked on.",
+    "liveDemo": "Live Demo",
+    "viewCode": "View Code",
+    "items": {
+      "icoreven": {
+        "title": "ICOREVEN",
+        "description": "Development of a corporate website with a dual approach: attracting investors for their business model and capturing clients for their renovation services, all optimized with SEO and copywriting."
+      },
+      "portfolio": {
+        "title": "My Personal Portfolio",
+        "description": "A personal website to showcase my skills and projects, built with the latest technologies from the React ecosystem."
+      },
+      "sketchpad": {
+        "title": "Sketchpad",
+        "description": "An online drawing pad to unleash your creativity. Draw, color and export your creations."
+      },
+      "calculatorx": {
+        "title": "CalculatorX",
+        "description": "A modern and complete web calculator with an interactive exam mode where you can practice mathematics."
+      }
+    }
+  },
+  "contact": {
+    "title": "Contact",
+    "description": "Have a project in mind or just want to say hello? I'd be happy to hear from you. Let's create something amazing together!",
+    "location": "Tarragona, Spain",
+    "form": {
+      "title": "Write to me 👋",
+      "name": "Your name",
+      "email": "Your email address",
+      "message": "How can I help you?",
+      "send": "Send Message"
+    }
+  },
+  "footer": {
+    "designed": "Designed and developed by Eric Pastor",
+    "rights": "All rights reserved."
+  }
+}
