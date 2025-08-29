@@ -30,19 +30,31 @@
     "items": {
       "icoreven": {
         "title": "ICOREVEN",
-        "description": "Development of a corporate website with a dual approach: attracting investors for their business model and capturing clients for their renovation services, all optimized with SEO and copywriting."
+        "description": "Development of a corporate website with a dual approach: attracting investors for their business model and capturing clients for their renovation services, all optimized with SEO and copywriting.",
+        "tags": ["Wordpress", "Elementor", "SEO", "Copywriting"],
+        "demoUrl": "https://icoreven.com/",
+        "codeUrl": null
       },
       "portfolio": {
         "title": "My Personal Portfolio",
-        "description": "A personal website to showcase my skills and projects, built with the latest technologies from the React ecosystem."
+        "description": "A personal website to showcase my skills and projects, built with the latest technologies from the React ecosystem.",
+        "tags": ["React", "Next.js", "Tailwind CSS", "TypeScript"],
+        "demoUrl": "#",
+        "codeUrl": "https://github.com/ericpastorm/mi-portfolio"
       },
       "sketchpad": {
         "title": "Sketchpad",
-        "description": "An online drawing pad to unleash your creativity. Draw, color and export your creations."
+        "description": "An online drawing pad to unleash your creativity. Draw, color and export your creations.",
+        "tags": ["React", "Tailwind CSS", "Vite"],
+        "demoUrl": "https://ericpastorm.github.io/sketchpad/",
+        "codeUrl": "https://github.com/ericpastorm/sketchpad"
       },
       "calculatorx": {
         "title": "CalculatorX",
-        "description": "A modern and complete web calculator with an interactive exam mode where you can practice mathematics."
+        "description": "A modern and complete web calculator with an interactive exam mode where you can practice mathematics.",
+        "tags": ["Vite", "Tailwind CSS", "JavaScript"],
+        "demoUrl": "https://github.com/ericpastorm/CalculatorX",
+        "codeUrl": "https://ericpastorm.github.io/CalculatorX/"
       }
     }
   },
