@@ -53,8 +53,8 @@
         "title": "CalculatorX",
         "description": "Una calculadora web moderna y completa con un modo examen interactivo donde practicar matemáticas.",
         "tags": ["Vite", "Tailwind CSS", "JavaScript"],
-        "demoUrl": "https://github.com/ericpastorm/CalculatorX",
-        "codeUrl": "https://ericpastorm.github.io/CalculatorX/"
+        "demoUrl": "https://ericpastorm.github.io/CalculatorX/",
+        "codeUrl": "https://github.com/ericpastorm/CalculatorX/"
       }
     }
   },
