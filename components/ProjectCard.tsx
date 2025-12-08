@@ -26,7 +26,7 @@ export function ProjectCard({ project, labels }: { project: ProjectItem; labels:
         </div>
         <div className="flex items-center gap-4">
           {project.demoUrl && (
-            <a href={project.demoUrl} target="_blank" className="flex items-center gap-2 px-4 py-2 rounded-lg text-black font-bold bg-[rgb(30,244,174)] hover:bg-[rgb(30,244,174)]/90 transition-colors">
+            <a href={project.demoUrl} target="_blank" className="flex items-center gap-2 px-4 py-2 rounded-lg text-black font-bold bg-[rgb(56,189,248)] hover:bg-[rgba(19, 101, 136, 1)]/90 transition-colors">
               <ExternalLink className="h-4 w-4" />
               {labels.liveDemo}
             </a>

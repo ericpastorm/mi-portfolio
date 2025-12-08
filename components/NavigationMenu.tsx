@@ -33,6 +33,22 @@ export function NavigationMenu({
 }) {
   // 4. Eliminamos la línea `const t = useTranslations();`.
 
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    const targetId = href.replace('#', '');
+    const element = document.getElementById(targetId);
+    if (element) {
+      const offset = 100; // Espacio extra en la parte superior
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
+      
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    }
+  };
+
   return (
     <>
       {/* Theme switcher no cambia */}
@@ -57,6 +73,7 @@ export function NavigationMenu({
             <motion.a
               key={item.href}
               href={item.href}
+              onClick={(e) => handleNavClick(e, item.href)}
               // 5. Usamos el objeto `translations` que recibimos por props.
               // item.labelKey es 'home', 'about', etc., así que encaja perfectamente.
               className="relative flex h-10 w-10 items-center justify-center rounded-full transition-colors duration-300 hover:bg-white/10"
