@@ -35,7 +35,7 @@ export const ThemeSwitcher = ({ ariaLabel }: { ariaLabel: string }) => {
   const updateFavicon = (currentTheme: 'dark' | 'light') => {
     const favicon = document.querySelector('link[rel="icon"]') as HTMLLinkElement;
     if (favicon) {
-      favicon.href = currentTheme === 'light' ? '/faviconLight.webp' : '/favicon.webp';
+      favicon.href = currentTheme === 'light' ? '/faviconLight.ico' : '/favicon.ico';
     }
   };
 

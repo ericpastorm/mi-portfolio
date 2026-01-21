@@ -49,6 +49,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title,
       description,
     },
+    icons: {
+      icon: [
+        { url: '/favicon.ico', media: '(prefers-color-scheme: dark)' },
+        { url: '/faviconLight.ico', media: '(prefers-color-scheme: light)' },
+      ],
+    },
     keywords: t.metadata?.keywords,
   };
 }
