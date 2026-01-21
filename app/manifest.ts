@@ -1,0 +1,20 @@
+import { MetadataRoute } from 'next'
+ 
+export default function manifest(): MetadataRoute.Manifest {
+  return {
+    name: 'Eric Pastor Portfolio',
+    short_name: 'Eric Pastor',
+    description: 'Portfolio of Eric Pastor, Software Developer',
+    start_url: '/',
+    display: 'standalone',
+    background_color: '#0A0A0A',
+    theme_color: '#F7B731',
+    icons: [
+      {
+        src: '/favicon.webp',
+        sizes: 'any',
+        type: 'image/webp',
+      },
+    ],
+  }
+}

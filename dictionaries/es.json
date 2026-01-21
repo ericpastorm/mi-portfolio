@@ -1,4 +1,9 @@
 {
+  "metadata": {
+    "title": "Eric Pastor | Desarrollador de Software - Web, Móvil e IA",
+    "description": "Portfolio de Eric Pastor, desarrollador de software multiplataforma en Tarragona, España. Especializado en Next.js, React, desarrollo móvil y soluciones de IA.",
+    "keywords": ["Desarrollador de Software", "Desarrollo Web", "Desarrollo de Apps", "React", "Next.js", "Tarragona", "Eric Pastor", "Portfolio", "Full Stack"]
+  },
   "navigation": {
     "home": "Inicio",
     "about": "Sobre Mí",

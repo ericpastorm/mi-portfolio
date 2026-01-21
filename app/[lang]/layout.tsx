@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "../globals.css";
 import localFont from "next/font/local";
+import { getDictionary } from "../dictionaries";
 
 const switzer = localFont({
   src: '../fonts/Switzer-Variable.woff2',
@@ -11,17 +12,47 @@ const switzer = localFont({
   variable: '--font-switzer',
 });
 
-export const metadata: Metadata = {
-  title: "Eric Pastor - Portfolio",
-  description: "Mi portfolio",
-};
-
 type Props = {
   children: React.ReactNode;
   params: Promise<{ lang: string }>;
 };
 
-// 👇 CORRECCIÓN AQUÍ: Recibimos `params` completo
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { lang } = await params;
+  const t = await getDictionary(lang as 'en' | 'es');
+  
+  // Use metadata from dictionaries if available, otherwise fallback to defaults
+  const title = t.metadata?.title || "Eric Pastor | Software Developer";
+  const description = t.metadata?.description || "Portfolio of Eric Pastor, a multiplatform software developer.";
+  
+  return {
+    title,
+    description,
+    metadataBase: new URL('https://ericpastor.dev'),
+    alternates: {
+      canonical: `/${lang}`,
+      languages: {
+        'en': '/en',
+        'es': '/es',
+      },
+    },
+    openGraph: {
+      title,
+      description,
+      url: `https://ericpastor.dev/${lang}`,
+      siteName: 'Eric Pastor Portfolio',
+      locale: lang,
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+    },
+    keywords: t.metadata?.keywords,
+  };
+}
+
 export default async function RootLayout({ 
   children, 
   params 
