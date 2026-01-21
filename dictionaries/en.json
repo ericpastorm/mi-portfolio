@@ -28,6 +28,27 @@
     "liveDemo": "Live Demo",
     "viewCode": "View Code",
     "items": {
+      "basaltworks": {
+        "title": "Basalt Works",
+        "description": "Website for a high-tech software architecture agency. Features a distinctive industrial aesthetic to showcase services like process mining, autonomous workflows, and systems engineering.",
+        "tags": ["React", "Next.js", "Tailwind CSS"],
+        "demoUrl": "https://basaltworks.com/",
+        "codeUrl": null
+      },
+      "gaelxdesigns": {
+        "title": "GaelxDesigns",
+        "description": "Portfolio website for a multidisciplinary designer specializing in streetwear and fashion. Built with a headless CMS for easy content management.",
+        "tags": ["Next.js", "Tailwind CSS", "Sanity"],
+        "demoUrl": "https://gaelxdesigns.com/",
+        "codeUrl": null
+      },
+      "cydservicios": {
+        "title": "CyD Servicios",
+        "description": "Corporate website for a construction company with over 20 years of experience. The design reflects solidity and trust, showcasing their comprehensive services and extensive portfolio.",
+        "tags": ["Astro", "Tailwind CSS"],
+        "demoUrl": "https://cydservicios.com/",
+        "codeUrl": null
+      },
       "icoreven": {
         "title": "ICOREVEN",
         "description": "Development of a corporate website with a dual approach: attracting investors for their business model and capturing clients for their renovation services, all optimized with SEO and copywriting.",

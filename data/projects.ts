@@ -11,6 +11,24 @@ export type ProjectType = {
 // Function to get projects data with translations
 export const getProjectsData = (t: any): ProjectType[] => [
   {
+    title: t('projects.items.basaltworks.title'),
+    description: t('projects.items.basaltworks.description'),
+    tags: ["React", "Next.js", "Tailwind CSS"],
+    demoUrl: "https://basaltworks.com/",
+  },
+  {
+    title: t('projects.items.gaelxdesigns.title'),
+    description: t('projects.items.gaelxdesigns.description'),
+    tags: ["Next.js", "Tailwind CSS", "Sanity"],
+    demoUrl: "https://gaelxdesigns.com/",
+  },
+  {
+    title: t('projects.items.cydservicios.title'),
+    description: t('projects.items.cydservicios.description'),
+    tags: ["Astro", "Tailwind CSS"],
+    demoUrl: "https://cydservicios.com/",
+  },
+  {
     title: t('projects.items.icoreven.title'),
     description: t('projects.items.icoreven.description'),
     tags: ["Wordpress", "Elementor", "SEO", "Copywriting"],
