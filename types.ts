@@ -60,4 +60,11 @@ export interface Dictionary {
     designed: string;
     rights: string;
   };
+  os: {
+    start: string;
+    minimize: string;
+    maximize: string;
+    restore: string;
+    close: string;
+  };
 }

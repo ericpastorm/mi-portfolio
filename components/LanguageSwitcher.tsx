@@ -17,12 +17,7 @@ export const LanguageSwitcher = () => {
   const router = useRouter();
   const pathname = usePathname();
 
-  // --- INICIO DE LOS CAMBIOS ---
-
-  // 1. Eliminamos el hook `useLocale` de 'next-intl'.
-
-  // 2. Obtenemos el idioma actual ('lang') desde el pathname.
-  // Por ejemplo, si pathname es "/es/proyectos", .split('/')[1] nos dará "es".
+  // Obtenemos el idioma actual ('lang') desde el pathname.
   const lang = pathname.split('/')[1];
 
   useEffect(() => {
@@ -30,7 +25,6 @@ export const LanguageSwitcher = () => {
   }, []);
 
   const switchLanguage = (newLocale: string) => {
-    // 3. Usamos `lang` en lugar de `locale` para construir la nueva ruta.
     const pathWithoutLocale = pathname.replace(`/${lang}`, '') || '/';
     router.push(`/${newLocale}${pathWithoutLocale}`);
     setIsOpen(false);
@@ -40,47 +34,39 @@ export const LanguageSwitcher = () => {
     return null;
   }
 
-  // 4. Usamos `lang` para encontrar el idioma actual a mostrar.
   const currentLanguage = languages.find(l => l.code === lang);
 
-  // --- FIN DE LOS CAMBIOS ---
-
+  // Tray icon: el menú se abre hacia ARRIBA (la taskbar está abajo)
   return (
-    <motion.div
-      className="fixed top-8 left-8 z-50"
-      initial={{ y: -100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.5, ease: 'easeOut', delay: 0.1 }}
-    >
-      <div className="relative">
-        <motion.button
-          onClick={() => setIsOpen(!isOpen)}
-          className="flex items-center gap-2 h-11 px-4 nav-glass"
-          aria-label="Change language"
-          whileHover={{ scale: 1.06 }}
-          whileTap={{ scale: 0.94 }}
-          transition={{ type: 'spring', stiffness: 350, damping: 15 }}
-        >
-          <Languages className="h-4 w-4 nav-icon" />
-          <span className="text-sm nav-icon font-bold tracking-wide">
-            {currentLanguage?.flag} {currentLanguage?.code.toUpperCase()}
-          </span>
-        </motion.button>
+    <div className="relative">
+      <motion.button
+        onClick={() => setIsOpen(!isOpen)}
+        className="tray-btn"
+        aria-label="Change language"
+        aria-expanded={isOpen}
+        whileTap={{ scale: 0.94 }}
+        transition={{ type: 'spring', stiffness: 350, damping: 15 }}
+      >
+        <Languages className="h-3.5 w-3.5" />
+        <span>
+          {currentLanguage?.flag} {currentLanguage?.code.toUpperCase()}
+        </span>
+      </motion.button>
 
-        {isOpen && (
+      {isOpen && (
+        <>
+          <div className="fixed inset-0 z-[92]" onClick={() => setIsOpen(false)} aria-hidden="true" />
           <motion.div
-            initial={{ opacity: 0, y: -10, scale: 0.95 }}
+            initial={{ opacity: 0, y: 10, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -10, scale: 0.95 }}
             transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-            className="absolute top-full mt-2 left-0 window-panel rounded-xl overflow-hidden"
+            className="window-panel absolute bottom-full mb-2 right-0 z-[95] w-44 rounded-xl overflow-hidden"
           >
             {languages.map((language) => (
               <button
                 key={language.code}
                 onClick={() => switchLanguage(language.code)}
                 className={`flex items-center gap-3 w-full px-4 py-3 text-left hover:bg-[rgb(var(--accent))]/10 transition-colors ${
-                  // 5. Y finalmente, aquí también usamos `lang`.
                   language.code === lang ? 'bg-[rgb(var(--accent))]/10' : ''
                 }`}
               >
@@ -89,8 +75,8 @@ export const LanguageSwitcher = () => {
               </button>
             ))}
           </motion.div>
-        )}
-      </div>
-    </motion.div>
+        </>
+      )}
+    </div>
   );
 };

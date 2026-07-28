@@ -107,5 +107,12 @@
   "footer": {
     "designed": "Diseñado y desarrollado por Eric Pastor",
     "rights": "Todos los derechos reservados."
+  },
+  "os": {
+    "start": "Inicio",
+    "minimize": "Minimizar",
+    "maximize": "Maximizar",
+    "restore": "Restaurar",
+    "close": "Cerrar"
   }
 }

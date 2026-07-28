@@ -52,16 +52,15 @@ export const ThemeSwitcher = ({ ariaLabel }: { ariaLabel: string }) => {
   return (
     <motion.button
       onClick={toggleTheme}
-      className="flex h-11 w-11 items-center justify-center rounded-full btn-transport"
+      className="tray-btn"
       aria-label={ariaLabel}
-      whileHover={{ scale: 1.1, rotate: 8 }}
       whileTap={{ scale: 0.92 }}
       transition={{ type: 'spring', stiffness: 350, damping: 15 }}
     >
       {theme === 'dark' ? (
-        <Sun className="h-5 w-5" />
+        <Sun className="h-4 w-4" />
       ) : (
-        <Moon className="h-5 w-5" />
+        <Moon className="h-4 w-4" />
       )}
     </motion.button>
   );
