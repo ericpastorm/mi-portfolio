@@ -68,7 +68,7 @@ export function NavigationMenu({
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5, ease: 'easeOut' }}
       >
-        <div className="flex items-center gap-2 rounded-full nav-glass p-2">
+        <div className="flex items-center gap-2 nav-glass p-2">
           {navItems.map((item) => (
             <motion.a
               key={item.href}
@@ -76,10 +76,10 @@ export function NavigationMenu({
               onClick={(e) => handleNavClick(e, item.href)}
               // 5. Usamos el objeto `translations` que recibimos por props.
               // item.labelKey es 'home', 'about', etc., así que encaja perfectamente.
-              className="relative flex h-10 w-10 items-center justify-center rounded-full transition-colors duration-300 hover:bg-white/10"
+              className="relative flex h-10 w-10 items-center justify-center rounded-full transition-all duration-200 hover:bg-[rgb(var(--accent))]/10 active:translate-y-px"
               aria-label={translations[item.labelKey as keyof NavTranslations]}
-              whileHover={{ y: -5, scale: 1.1 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              whileHover={{ y: -3, scale: 1.08 }}
+              transition={{ type: 'spring', stiffness: 350, damping: 15 }}
             >
               <item.icon
                 className={`h-5 w-5 nav-icon ${
@@ -88,9 +88,10 @@ export function NavigationMenu({
               />
               {activeSection === item.href && (
                 <motion.div
-                  className="absolute bottom-1 h-1 w-1 rounded-full bg-green-500"
+                  className="absolute bottom-0.5 carousel-dot-active"
+                  style={{ width: 6, height: 6, borderRadius: 2 }}
                   layoutId="active-pill"
-                  transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                  transition={{ type: 'spring', stiffness: 380, damping: 25 }}
                 />
               )}
             </motion.a>

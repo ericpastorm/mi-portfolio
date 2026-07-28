@@ -11,6 +11,11 @@ export interface ProjectItem {
 
 // Ahora, definimos la estructura completa de nuestro diccionario de traducciones
 export interface Dictionary {
+  metadata?: {
+    title: string;
+    description: string;
+    keywords?: string[];
+  };
   navigation: {
     home: string;
     about: string;
@@ -27,6 +32,7 @@ export interface Dictionary {
     title: string;
     description1: string;
     description2: string;
+    description3: string;
   };
   skills: {
     [key: string]: string; // Para claves dinámicas como 'frontend', 'backend', etc.

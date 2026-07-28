@@ -12,8 +12,8 @@ interface AnimatedSectionProps {
 const AnimatedSection: React.FC<AnimatedSectionProps> = ({ children, className = '', delay = 0, id }) => {
   
   const sectionVariants: Variants = {
-    initial: { opacity: 0, y: 30 },
-    whileInView: { opacity: 1, y: 0 },
+    initial: { opacity: 0, y: 32, scale: 0.98 },
+    whileInView: { opacity: 1, y: 0, scale: 1 },
   };
 
   return (
@@ -22,11 +22,11 @@ const AnimatedSection: React.FC<AnimatedSectionProps> = ({ children, className =
       variants={sectionVariants}
       initial="initial"
       whileInView="whileInView"
-      transition={{ duration: 0.5, ease: "easeOut", delay }}
+      transition={{ type: "spring", stiffness: 80, damping: 16, delay }}
       viewport={{ once: true }}
-      className={`w-full max-w-5xl bg-[rgb(var(--panel-background))] rounded-2xl p-6 md:p-8 ${className}`}
+      className={`window-panel texture-droplets w-full max-w-5xl p-6 md:p-8 ${className}`}
     >
-      {children}
+      <div className="relative z-10">{children}</div>
     </motion.div>
   );
 };

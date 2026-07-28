@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "title": "Eric Pastor | Software Developer - Web, Mobile & AI",
-    "description": "Portfolio of Eric Pastor, a multiplatform software developer based in Tarragona, Spain. Specialized in Next.js, React, Mobile development, and AI solutions.",
-    "keywords": ["Software Developer", "Web Development", "Mobile App Development", "React", "Next.js", "Tarragona", "Eric Pastor", "Portfolio", "Full Stack"]
+    "title": "Eric Pastor | Software Developer - Web, AI & Automation",
+    "description": "Portfolio of Eric Pastor, software developer based in Tarragona, Spain, and founder of Basalt Works. Specialized in Next.js, React, AI automations and internal tools for businesses.",
+    "keywords": ["Software Developer", "Web Development", "AI Automation", "Basalt Works", "React", "Next.js", "Tarragona", "Eric Pastor", "Portfolio", "Full Stack"]
   },
   "navigation": {
     "home": "Home",
@@ -13,13 +13,14 @@
   "hero": {
     "availability": "Available for projects",
     "greeting": "Hello, I'm Eric",
-    "description": "<accent>Software developer</accent> multiplatform, dedicated to transforming ideas into interactive experiences for <accent>any screen you can imagine</accent>.",
+    "description": "<accent>Software developer</accent> turning ideas into interactive experiences — and founder of <accent>Basalt Works</accent>, where I build websites, AI automations and internal tools for businesses.",
     "changeTheme": "Change theme"
   },
   "about": {
     "title": "About Me",
     "description1": "My job consists of transforming complex problems into efficient and elegant software solutions. As a developer, my passion doesn't only lie in writing clean code, but in building the tool that each project needs.",
-    "description2": "I keep myself in constant learning, actively exploring from web and mobile development to artificial intelligence, which allows me to bring a comprehensive and updated vision to each challenge."
+    "description2": "In 2025 I founded <accent>Basalt Works</accent>, my own software development and automation agency. There I build modern websites, AI automations and internal tools for businesses, and I help them simplify their day-to-day processes.",
+    "description3": "I keep myself in constant learning, actively exploring from web and mobile development to artificial intelligence, which allows me to bring a comprehensive and updated vision to each challenge."
   },
   "skills": {
     "frontend": "Frontend",
@@ -29,22 +30,29 @@
   },
   "projects": {
     "title": "Projects",
-    "subtitle": "A selection of projects I've worked on.",
+    "subtitle": "A selection of client work and personal projects.",
     "liveDemo": "Live Demo",
     "viewCode": "View Code",
     "items": {
       "basaltworks": {
         "title": "Basalt Works",
-        "description": "Website for a high-tech software architecture agency. Features a distinctive industrial aesthetic to showcase services like process mining, autonomous workflows, and systems engineering.",
+        "description": "Website for my software development and automation agency. High-tech industrial aesthetic, presenting services from modern websites to AI automations and internal tools.",
         "tags": ["React", "Next.js", "Tailwind CSS"],
         "demoUrl": "https://basaltworks.com/",
         "codeUrl": null
       },
-      "gaelxdesigns": {
-        "title": "GaelxDesigns",
-        "description": "Portfolio website for a multidisciplinary designer specializing in streetwear and fashion. Built with a headless CMS for easy content management.",
-        "tags": ["Next.js", "Tailwind CSS", "Sanity"],
-        "demoUrl": "https://gaelxdesigns.com/",
+      "primehomes": {
+        "title": "PrimeHomes Operations Agent",
+        "description": "AI operations agent for a real estate business, running on a Hetzner VPS. Built with Hermes and custom skills and workflows, it cut document handling from 5 hours a week to 90 minutes (-70%). Reachable through WhatsApp, Telegram and Discord.",
+        "tags": ["AI Agents", "Hermes", "Automation", "Hetzner"],
+        "demoUrl": null,
+        "codeUrl": null
+      },
+      "gaelsantano": {
+        "title": "Gael Santano",
+        "description": "Portfolio and storefront for a custom fashion designer. Built with Next.js and Tailwind, using Shopify as the commerce backend.",
+        "tags": ["Next.js", "Tailwind CSS", "Shopify"],
+        "demoUrl": "https://gaelsantano.com/",
         "codeUrl": null
       },
       "cydservicios": {
@@ -56,8 +64,8 @@
       },
       "icoreven": {
         "title": "ICOREVEN",
-        "description": "Development of a corporate website with a dual approach: attracting investors for their business model and capturing clients for their renovation services, all optimized with SEO and copywriting.",
-        "tags": ["Wordpress", "Elementor", "SEO", "Copywriting"],
+        "description": "Corporate website for a renovation and investment business, redesigned with Astro and Tailwind. Dual focus: attracting investors and capturing clients for their renovation services, with SEO and copywriting.",
+        "tags": ["Astro", "Tailwind CSS", "SEO", "Copywriting"],
         "demoUrl": "https://icoreven.com/",
         "codeUrl": null
       },

@@ -55,36 +55,37 @@ export const LanguageSwitcher = () => {
       <div className="relative">
         <motion.button
           onClick={() => setIsOpen(!isOpen)}
-          className="flex items-center gap-2 h-10 px-3 rounded-full nav-glass transition-all duration-300 hover:bg-white/10"
+          className="flex items-center gap-2 h-11 px-4 nav-glass"
           aria-label="Change language"
-          whileHover={{ y: -5, scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
-          transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+          whileHover={{ scale: 1.06 }}
+          whileTap={{ scale: 0.94 }}
+          transition={{ type: 'spring', stiffness: 350, damping: 15 }}
         >
           <Languages className="h-4 w-4 nav-icon" />
-          <span className="text-sm nav-icon font-medium">
+          <span className="text-sm nav-icon font-bold tracking-wide">
             {currentLanguage?.flag} {currentLanguage?.code.toUpperCase()}
           </span>
         </motion.button>
 
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="absolute top-full mt-2 left-0 nav-glass rounded-lg overflow-hidden border border-white/10"
+            initial={{ opacity: 0, y: -10, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -10, scale: 0.95 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+            className="absolute top-full mt-2 left-0 window-panel rounded-xl overflow-hidden"
           >
             {languages.map((language) => (
               <button
                 key={language.code}
                 onClick={() => switchLanguage(language.code)}
-                className={`flex items-center gap-3 w-full px-4 py-3 text-left hover:bg-white/10 transition-colors ${
+                className={`flex items-center gap-3 w-full px-4 py-3 text-left hover:bg-[rgb(var(--accent))]/10 transition-colors ${
                   // 5. Y finalmente, aquí también usamos `lang`.
-                  language.code === lang ? 'bg-white/5' : ''
+                  language.code === lang ? 'bg-[rgb(var(--accent))]/10' : ''
                 }`}
               >
                 <span className="text-lg">{language.flag}</span>
-                <span className="text-sm nav-icon font-medium">{language.name}</span>
+                <span className="text-sm text-primary font-medium">{language.name}</span>
               </button>
             ))}
           </motion.div>

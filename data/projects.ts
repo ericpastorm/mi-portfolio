@@ -8,51 +8,35 @@ export type ProjectType = {
   codeUrl?: string;
 };
 
-// Function to get projects data with translations
-export const getProjectsData = (t: any): ProjectType[] => [
-  {
-    title: t('projects.items.basaltworks.title'),
-    description: t('projects.items.basaltworks.description'),
-    tags: ["React", "Next.js", "Tailwind CSS"],
+// URLs canónicas de cada proyecto. Los textos (título/descripción/tags)
+// viven en dictionaries/*.json y se renderizan desde ahí; este archivo
+// sirve de referencia de los enlaces por proyecto.
+export const projectLinks: Record<string, { demoUrl?: string; codeUrl?: string }> = {
+  basaltworks: {
     demoUrl: "https://basaltworks.com/",
   },
-  {
-    title: t('projects.items.gaelxdesigns.title'),
-    description: t('projects.items.gaelxdesigns.description'),
-    tags: ["Next.js", "Tailwind CSS", "Sanity"],
-    demoUrl: "https://gaelxdesigns.com/",
+  primehomes: {
+    // Herramienta interna — sin demo pública.
   },
-  {
-    title: t('projects.items.cydservicios.title'),
-    description: t('projects.items.cydservicios.description'),
-    tags: ["Astro", "Tailwind CSS"],
+  gaelsantano: {
+    demoUrl: "https://gaelsantano.com/",
+  },
+  cydservicios: {
     demoUrl: "https://cydservicios.com/",
   },
-  {
-    title: t('projects.items.icoreven.title'),
-    description: t('projects.items.icoreven.description'),
-    tags: ["Wordpress", "Elementor", "SEO", "Copywriting"],
-    demoUrl: "https://icoreven.com/", 
+  icoreven: {
+    demoUrl: "https://icoreven.com/",
   },
-  {
-    title: t('projects.items.portfolio.title'),
-    description: t('projects.items.portfolio.description'),
-    tags: ["React", "Next.js", "Tailwind CSS", "TypeScript"],
-    demoUrl: "#", 
-    codeUrl: "https://github.com/ericpastorm/mi-portfolio", 
+  portfolio: {
+    demoUrl: "#",
+    codeUrl: "https://github.com/ericpastorm/mi-portfolio",
   },
-  {
-    title: t('projects.items.sketchpad.title'),
-    description: t('projects.items.sketchpad.description'),
-    tags: ["React", "Tailwind CSS", "Vite"],
+  sketchpad: {
     demoUrl: "https://ericpastorm.github.io/sketchpad/",
     codeUrl: "https://github.com/ericpastorm/sketchpad",
   },
-  {
-    title: t('projects.items.calculatorx.title'),
-    description: t('projects.items.calculatorx.description'),
-    tags: ["Vite", "Tailwind CSS", "JavaScript"],
-    demoUrl: "https://github.com/ericpastorm/CalculatorX",
-    codeUrl: "https://ericpastorm.github.io/CalculatorX/",
+  calculatorx: {
+    demoUrl: "https://ericpastorm.github.io/CalculatorX/",
+    codeUrl: "https://github.com/ericpastorm/CalculatorX/",
   },
-];
+};

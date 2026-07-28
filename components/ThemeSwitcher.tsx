@@ -4,30 +4,19 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Sun, Moon } from 'lucide-react';
-// 1. Eliminamos la importación de `next-intl`.
 
-// 2. Añadimos `ariaLabel` a los props del componente.
+// Frutiger Aero es light-first: el tema por defecto es LIGHT.
+// La elección del usuario persiste en localStorage ('dark' | 'light').
 export const ThemeSwitcher = ({ ariaLabel }: { ariaLabel: string }) => {
   const [mounted, setMounted] = useState(false);
-  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
-  // 3. Eliminamos la línea `const t = useTranslations();`.
+  const [theme, setTheme] = useState<'dark' | 'light'>('light');
 
-  // El resto de la lógica del componente (useEffect, toggleTheme, etc.)
-  // se queda exactamente igual, no necesita cambios.
   useEffect(() => {
-    setMounted(true); 
+    setMounted(true);
     const storedTheme = localStorage.getItem('theme') as 'dark' | 'light' | null;
-    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    
-    let initialTheme: 'dark' | 'light';
-    if (storedTheme && (storedTheme === 'dark' || storedTheme === 'light')) {
-      initialTheme = storedTheme;
-    } else if (systemPrefersDark) {
-      initialTheme = 'dark';
-    } else {
-      initialTheme = 'light';
-    }
-    
+    const initialTheme: 'dark' | 'light' =
+      storedTheme === 'dark' || storedTheme === 'light' ? storedTheme : 'light';
+
     setTheme(initialTheme);
     updateFavicon(initialTheme);
   }, []);
@@ -40,13 +29,13 @@ export const ThemeSwitcher = ({ ariaLabel }: { ariaLabel: string }) => {
   };
 
   useEffect(() => {
-    if (theme === 'light') {
-      document.documentElement.classList.add('light');
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
     } else {
-      document.documentElement.classList.remove('light');
+      document.documentElement.classList.remove('dark');
     }
     localStorage.setItem('theme', theme);
-    
+
     if (mounted) {
       updateFavicon(theme);
     }
@@ -63,17 +52,16 @@ export const ThemeSwitcher = ({ ariaLabel }: { ariaLabel: string }) => {
   return (
     <motion.button
       onClick={toggleTheme}
-      className="flex h-10 w-10 items-center justify-center rounded-full nav-glass transition-all duration-300 hover:bg-white/10"
-      // 4. Usamos el prop `ariaLabel` que hemos recibido.
+      className="flex h-11 w-11 items-center justify-center rounded-full btn-transport"
       aria-label={ariaLabel}
-      whileHover={{ y: -5, scale: 1.1 }}
-      whileTap={{ scale: 0.95 }}
-      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+      whileHover={{ scale: 1.1, rotate: 8 }}
+      whileTap={{ scale: 0.92 }}
+      transition={{ type: 'spring', stiffness: 350, damping: 15 }}
     >
       {theme === 'dark' ? (
-        <Sun className="h-5 w-5 nav-icon" />
+        <Sun className="h-5 w-5" />
       ) : (
-        <Moon className="h-5 w-5 nav-icon" />
+        <Moon className="h-5 w-5" />
       )}
     </motion.button>
   );

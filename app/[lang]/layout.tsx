@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   
   // Use metadata from dictionaries if available, otherwise fallback to defaults
   const title = t.metadata?.title || "Eric Pastor | Software Developer";
-  const description = t.metadata?.description || "Portfolio of Eric Pastor, a multiplatform software developer.";
+  const description = t.metadata?.description || "Portfolio of Eric Pastor, software developer and founder of Basalt Works.";
   
   return {
     title,

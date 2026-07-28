@@ -4,17 +4,8 @@
 import { useState, useEffect, useCallback } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { ProjectCard } from "./ProjectCard";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { SkipBack, SkipForward } from "lucide-react";
 import type { ProjectItem } from "@/types";
-
-// Tipos de datos que el componente necesita
-type ProjectData = {
-  title: string;
-  description: string;
-  tags: string[];
-  demoUrl?: string | undefined;
-  codeUrl?: string | undefined;
-}
 
 type CardLabels = {
   liveDemo: string;
@@ -55,7 +46,7 @@ export function ProjectCarousel({ projects, labels }: { projects: ProjectItem[];
 
   return (
     <div>
-      <div className="overflow-hidden" ref={emblaRef}>
+      <div className="overflow-hidden px-1 py-4 -mx-1 -my-4" ref={emblaRef}>
         <div className="flex -ml-4">
           {projects.map((project, index) => (
             <div key={index} className="flex-shrink-0 flex-grow-0 basis-full md:basis-1/2 xl:basis-[40%] pl-4">
@@ -65,23 +56,32 @@ export function ProjectCarousel({ projects, labels }: { projects: ProjectItem[];
         </div>
       </div>
 
-      <div className="flex items-center justify-center gap-8 mt-8">
-        <button onClick={scrollPrev} disabled={!prevBtnEnabled} className="disabled:opacity-30">
-          <ArrowLeft className="h-8 w-8 text-muted hover:text-secondary transition-colors" />
+      <div className="flex items-center justify-center gap-8 mt-9">
+        <button
+          onClick={scrollPrev}
+          disabled={!prevBtnEnabled}
+          aria-label="Previous project"
+          className="btn-transport flex h-12 w-12 items-center justify-center disabled:opacity-40 disabled:pointer-events-none"
+        >
+          <SkipBack className="h-5 w-5" />
         </button>
         <div className="flex items-center gap-3">
           {scrollSnaps.map((_, index) => (
             <button
               key={index}
               onClick={() => scrollTo(index)}
-              className={`h-2 w-2 rounded-full transition-all duration-300 ${
-                index === selectedIndex ? "carousel-dot-active w-4" : "carousel-dot"
-              }`}
+              aria-label={`Go to slide ${index + 1}`}
+              className={index === selectedIndex ? "carousel-dot-active" : "carousel-dot"}
             />
           ))}
         </div>
-        <button onClick={scrollNext} disabled={!nextBtnEnabled} className="disabled:opacity-30">
-          <ArrowRight className="h-8 w-8 text-muted hover:text-secondary transition-colors" />
+        <button
+          onClick={scrollNext}
+          disabled={!nextBtnEnabled}
+          aria-label="Next project"
+          className="btn-transport flex h-12 w-12 items-center justify-center disabled:opacity-40 disabled:pointer-events-none"
+        >
+          <SkipForward className="h-5 w-5" />
         </button>
       </div>
     </div>

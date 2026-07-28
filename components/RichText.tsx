@@ -9,7 +9,7 @@ export function RichText({ text }: { text: string }) {
       {parts.map((part, i) =>
         i % 2 === 1 ? (
           // El texto dentro de <accent>
-          <span key={i} className="text-green-500 font-bold"> {/* <-- Tu clase de CSS para acentuar */}
+          <span key={i} className="chrome-accent"> {/* <-- Tu clase de CSS para acentuar */}
             {part}
           </span>
         ) : (
