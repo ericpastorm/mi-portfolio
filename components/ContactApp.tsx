@@ -6,13 +6,13 @@ import type { Dictionary } from "@/types";
 
 export function ContactApp({ dict }: { dict: Dictionary }) {
   return (
-    <div>
-      <p className="text-base md:text-lg text-secondary mb-8 max-w-2xl">
+    <div className="contact-app">
+      <p className="contact-intro mb-5 max-w-2xl text-sm leading-relaxed text-secondary md:mb-8 md:text-lg">
         {dict.contact.description}
       </p>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-7">
-        <div className="lg:col-span-1 space-y-5">
+      <div className="contact-layout grid grid-cols-1 gap-5 lg:grid-cols-3 lg:gap-7">
+        <div className="contact-methods space-y-3 md:space-y-5 lg:col-span-1">
           <div className="flex items-center gap-3.5">
             <span className="btn-metal flex h-10 w-10 shrink-0 items-center justify-center rounded-full">
               <Mail className="h-5 w-5" />
@@ -34,15 +34,15 @@ export function ContactApp({ dict }: { dict: Dictionary }) {
         </div>
 
         <div className="lg:col-span-2">
-          <div className="inset-panel p-5 md:p-6">
-            <form action="https://api.web3forms.com/submit" method="POST" className="space-y-5">
+          <div className="contact-form-panel inset-panel p-3 md:p-6">
+            <form action="https://api.web3forms.com/submit" method="POST" className="space-y-4 md:space-y-5">
               <input type="hidden" name="access_key" value={process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY} />
 
               <h3 className="led-chip">
                 {dict.contact.form.title}
               </h3>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div className="grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-5">
                 <input type="text" name="name" placeholder={dict.contact.form.name} required className="w-full form-input rounded-lg px-4 py-2.5" />
                 <input type="email" name="email" placeholder={dict.contact.form.email} required className="w-full form-input rounded-lg px-4 py-2.5" />
               </div>

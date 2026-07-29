@@ -34,7 +34,7 @@ export function StartMenu({ apps, onOpenApp, onClose }: StartMenuProps) {
           <span className="start-menu-avatar" aria-hidden="true">EP</span>
           <span className="start-menu-name">Eric Pastor</span>
         </div>
-        <div className="p-2">
+        <div className="start-menu-items">
           {apps.map((app) => (
             <button
               key={app.id}

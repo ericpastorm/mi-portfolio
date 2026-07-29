@@ -33,6 +33,27 @@
     "subtitle": "Una selección de trabajos para clientes y proyectos personales.",
     "liveDemo": "Visitar",
     "viewCode": "Ver Código",
+    "explorer": {
+      "back": "Atrás",
+      "forward": "Adelante",
+      "up": "Subir un nivel",
+      "refresh": "Actualizar miniaturas",
+      "address": "Dirección",
+      "objects": "objetos",
+      "ready": "Listo",
+      "openProject": "Abrir proyecto",
+      "publicStatus": "Publicado",
+      "privateStatus": "Sistema privado",
+      "screenshot": "archivo de imagen",
+      "thumbnailView": "Vista de miniaturas",
+      "technologies": "Tecnologías",
+      "categories": {
+        "agency": "Agencia",
+        "automation": "Automatización IA",
+        "client": "Trabajo de cliente",
+        "personal": "Proyecto personal"
+      }
+    },
     "items": {
       "basaltworks": {
         "title": "Basalt Works",
@@ -44,6 +65,7 @@
       "primehomes": {
         "title": "PrimeHomes Operations Agent",
         "description": "Agente de operaciones con IA para una inmobiliaria, funcionando en un VPS de Hetzner. Construido con Hermes y skills y workflows a medida, redujo la gestión de documentos de 5 horas semanales a 90 minutos (-70%). Accesible por WhatsApp, Telegram y Discord.",
+        "metric": "70% menos tiempo gestionando documentos",
         "tags": ["AI Agents", "Hermes", "Automatización", "Hetzner"],
         "demoUrl": null,
         "codeUrl": null
@@ -113,6 +135,8 @@
     "minimize": "Minimizar",
     "maximize": "Maximizar",
     "restore": "Restaurar",
-    "close": "Cerrar"
+    "close": "Cerrar",
+    "taskbar": "Barra de tareas del escritorio",
+    "clock": "Reloj"
   }
 }

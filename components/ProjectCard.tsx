@@ -1,6 +1,7 @@
 // components/ProjectCard.tsx
 
 import { SpotlightCard } from "./SpotlightCard";
+import { RichText } from "./RichText";
 import { ExternalLink, Github } from "lucide-react";
 import type { ProjectItem } from "@/types"; // ✨ Usamos también el tipo oficial
 
@@ -13,7 +14,7 @@ export function ProjectCard({ project, labels }: { project: ProjectItem; labels:
   const hasLinks = Boolean(project.demoUrl || project.codeUrl);
 
   return (
-    <SpotlightCard title={project.title} titleAs="h3" className="h-full">
+    <SpotlightCard title={<RichText text={project.title} />} titleAs="h3" className="h-full">
       <div className="flex flex-col justify-between h-full px-5 pb-5 pt-4">
         <div>
           <p className="text-secondary text-sm md:text-base mb-4">{project.description}</p>

@@ -16,14 +16,12 @@ export function DesktopIcon({ icon: Icon, label, selected, onSelect, onOpen }: D
     <button
       type="button"
       className={`desktop-icon ${selected ? "selected" : ""}`}
-      // Un clic selecciona; clic sobre uno ya seleccionado (o doble clic) abre.
-      // Así el mismo gesto funciona con ratón y con táctil.
-      onClick={() => (selected ? onOpen() : onSelect())}
-      onDoubleClick={onOpen}
-      onKeyDown={(e) => {
-        if (e.key === "Enter") onOpen();
+      onClick={() => {
+        onSelect();
+        onOpen();
       }}
       aria-label={label}
+      aria-pressed={selected}
     >
       <span className="desktop-icon-tile">
         <Icon className="h-7 w-7" aria-hidden="true" />

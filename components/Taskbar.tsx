@@ -19,27 +19,29 @@ interface TaskbarProps {
   activeId: string | null;
   startOpen: boolean;
   startLabel: string;
+  taskbarLabel: string;
+  clockLabel: string;
   themeSwitcherLabel: string;
   onStartToggle: () => void;
   onTaskClick: (id: string) => void;
 }
 
-function TrayClock() {
+function TrayClock({ label }: { label: string }) {
   const [now, setNow] = useState<Date | null>(null);
 
   useEffect(() => {
     setNow(new Date());
-    const interval = setInterval(() => setNow(new Date()), 1000);
+    const interval = setInterval(() => setNow(new Date()), 30_000);
     return () => clearInterval(interval);
   }, []);
 
   const pad = (n: number) => n.toString().padStart(2, "0");
   const text = now
-    ? `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`
-    : "--:--:--";
+    ? `${pad(now.getHours())}:${pad(now.getMinutes())}`
+    : "--:--";
 
   return (
-    <span className="led-chip tray-clock" aria-label="Clock">
+    <span className="led-chip tray-clock" aria-label={label}>
       {text}
     </span>
   );
@@ -50,6 +52,8 @@ export function Taskbar({
   activeId,
   startOpen,
   startLabel,
+  taskbarLabel,
+  clockLabel,
   themeSwitcherLabel,
   onStartToggle,
   onTaskClick,
@@ -57,15 +61,16 @@ export function Taskbar({
   const openApps = apps.filter((a) => a.open);
 
   return (
-    <div className="taskbar">
+    <div className="taskbar" role="toolbar" aria-label={taskbarLabel}>
       <button
         type="button"
         className={`start-btn ${startOpen ? "open" : ""}`}
         onClick={onStartToggle}
         aria-expanded={startOpen}
+        aria-label={startLabel}
       >
-        <span aria-hidden="true">✦</span>
-        {startLabel}
+        <span className="start-btn-mark" aria-hidden="true">✦</span>
+        <span className="start-btn-label">{startLabel}</span>
       </button>
 
       <div className="task-buttons">
@@ -75,15 +80,18 @@ export function Taskbar({
             type="button"
             className={`task-btn ${activeId === app.id && !app.minimized ? "active" : ""}`}
             onClick={() => onTaskClick(app.id)}
+            aria-label={app.title}
+            aria-pressed={activeId === app.id && !app.minimized}
+            title={app.title}
           >
             <app.icon className="h-4 w-4 shrink-0" aria-hidden="true" />
-            <span>{app.title}</span>
+            <span className="task-btn-label">{app.title}</span>
           </button>
         ))}
       </div>
 
       <div className="tray">
-        <TrayClock />
+        <TrayClock label={clockLabel} />
         <LanguageSwitcher />
         <ThemeSwitcher ariaLabel={themeSwitcherLabel} />
       </div>

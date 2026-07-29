@@ -1,12 +1,25 @@
 // types.ts
 
-// Primero, definimos cómo es un solo proyecto dentro de la lista de "items"
+import type { ProjectCategory, ProjectId } from "@/data/projects";
+
+/** Localized copy stored under projects.items in each dictionary. */
 export interface ProjectItem {
   title: string;
   description: string;
   tags?: string[];
   demoUrl?: string | null;
   codeUrl?: string | null;
+  metric?: string;
+}
+
+/** Complete project model consumed by the explorer and detail windows. */
+export interface LocalizedProject extends ProjectItem {
+  id: ProjectId;
+  image: `/projects/${string}`;
+  category: ProjectCategory;
+  tags: string[];
+  demoUrl?: string;
+  codeUrl?: string;
 }
 
 // Ahora, definimos la estructura completa de nuestro diccionario de traducciones
@@ -42,7 +55,23 @@ export interface Dictionary {
     subtitle: string;
     liveDemo: string;
     viewCode: string;
-    items: Record<string, ProjectItem>; // Un objeto donde cada clave es un string y el valor es un ProjectItem
+    explorer: {
+      back: string;
+      forward: string;
+      up: string;
+      refresh: string;
+      address: string;
+      objects: string;
+      ready: string;
+      openProject: string;
+      publicStatus: string;
+      privateStatus: string;
+      screenshot: string;
+      thumbnailView: string;
+      technologies: string;
+      categories: Record<ProjectCategory, string>;
+    };
+    items: Record<ProjectId, ProjectItem>;
   };
   contact: {
     title: string;
@@ -66,5 +95,7 @@ export interface Dictionary {
     maximize: string;
     restore: string;
     close: string;
+    taskbar: string;
+    clock: string;
   };
 }

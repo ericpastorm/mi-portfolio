@@ -33,6 +33,27 @@
     "subtitle": "A selection of client work and personal projects.",
     "liveDemo": "Live Demo",
     "viewCode": "View Code",
+    "explorer": {
+      "back": "Back",
+      "forward": "Forward",
+      "up": "Up one level",
+      "refresh": "Refresh thumbnails",
+      "address": "Address",
+      "objects": "objects",
+      "ready": "Ready",
+      "openProject": "Open project",
+      "publicStatus": "Published",
+      "privateStatus": "Private system",
+      "screenshot": "image file",
+      "thumbnailView": "Thumbnail view",
+      "technologies": "Technologies",
+      "categories": {
+        "agency": "Agency",
+        "automation": "AI automation",
+        "client": "Client work",
+        "personal": "Personal project"
+      }
+    },
     "items": {
       "basaltworks": {
         "title": "Basalt Works",
@@ -44,6 +65,7 @@
       "primehomes": {
         "title": "PrimeHomes Operations Agent",
         "description": "AI operations agent for a real estate business, running on a Hetzner VPS. Built with Hermes and custom skills and workflows, it cut document handling from 5 hours a week to 90 minutes (-70%). Reachable through WhatsApp, Telegram and Discord.",
+        "metric": "70% less document handling time",
         "tags": ["AI Agents", "Hermes", "Automation", "Hetzner"],
         "demoUrl": null,
         "codeUrl": null
@@ -113,6 +135,8 @@
     "minimize": "Minimize",
     "maximize": "Maximize",
     "restore": "Restore",
-    "close": "Close"
+    "close": "Close",
+    "taskbar": "Desktop taskbar",
+    "clock": "Clock"
   }
 }

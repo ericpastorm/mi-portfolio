@@ -9,7 +9,7 @@ interface SpotlightCardProps {
   children: ReactNode;
   className?: string;
   /** Si se pasa, el panel se corona con una barra de título estilo software */
-  title?: string;
+  title?: ReactNode;
   /** Nivel semántico del caption de la barra de título */
   titleAs?: "h2" | "h3";
   /** Aplica la textura de gotas de agua (Frutiger Aero) al panel */

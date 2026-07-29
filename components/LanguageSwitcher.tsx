@@ -48,7 +48,7 @@ export const LanguageSwitcher = () => {
         transition={{ type: 'spring', stiffness: 350, damping: 15 }}
       >
         <Languages className="h-3.5 w-3.5" />
-        <span>
+        <span className="language-current">
           {currentLanguage?.flag} {currentLanguage?.code.toUpperCase()}
         </span>
       </motion.button>

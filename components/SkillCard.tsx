@@ -4,7 +4,7 @@ import type { Skill } from '@/data/skills';
 
 export function SkillCard({ icon: Icon, name, color }: Skill) {
   return (
-    <div className="group relative flex items-center justify-center p-4 skill-card">
+    <div className="skill-card group relative flex min-h-13 items-center justify-center p-2.5 md:p-4">
 
       <Icon className="h-8 w-8 transition-transform duration-200 group-hover:scale-110" color={color} />
 

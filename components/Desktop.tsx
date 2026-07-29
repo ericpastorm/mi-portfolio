@@ -1,9 +1,16 @@
 // components/Desktop.tsx
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useReducer, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Monitor, User, FolderOpen, Mail, type LucideIcon } from "lucide-react";
+import {
+  FileImage,
+  FolderOpen,
+  Mail,
+  Monitor,
+  User,
+  type LucideIcon,
+} from "lucide-react";
 import { OsWindow, type WindowVisualState } from "./Window";
 import { DesktopIcon } from "./DesktopIcon";
 import { Taskbar } from "./Taskbar";
@@ -12,36 +19,263 @@ import { BootSplash } from "./BootSplash";
 import { WelcomeApp } from "./WelcomeApp";
 import { AboutApp } from "./AboutApp";
 import { ProjectsApp } from "./ProjectsApp";
+import { ProjectDetailApp } from "./ProjectDetailApp";
 import { ContactApp } from "./ContactApp";
+import { PROJECT_IDS, type ProjectId } from "@/data/projects";
 import type { Dictionary } from "@/types";
 
-type AppId = "welcome" | "about" | "projects" | "contact";
+export type BaseAppId = "welcome" | "about" | "projects" | "contact";
+export type ProjectWindowId = `project:${ProjectId}`;
+export type WindowId = BaseAppId | ProjectWindowId;
 
 interface AppDef {
   icon: LucideIcon;
   titleKey: keyof Dictionary["navigation"];
   width: number;
+  height: number;
 }
 
-const APP_DEFS: Record<AppId, AppDef> = {
-  welcome:  { icon: Monitor,    titleKey: "home",     width: 680 },
-  about:    { icon: User,       titleKey: "about",    width: 880 },
-  projects: { icon: FolderOpen, titleKey: "projects", width: 940 },
-  contact:  { icon: Mail,       titleKey: "contact",  width: 820 },
+interface WindowDef {
+  icon: LucideIcon;
+  title: string;
+  width: number;
+  height: number;
+}
+
+const BASE_APP_DEFS: Record<BaseAppId, AppDef> = {
+  welcome:  { icon: Monitor,    titleKey: "home",     width: 680, height: 620 },
+  about:    { icon: User,       titleKey: "about",    width: 880, height: 720 },
+  projects: { icon: FolderOpen, titleKey: "projects", width: 940, height: 680 },
+  contact:  { icon: Mail,       titleKey: "contact",  width: 820, height: 650 },
 };
 
-const APP_ORDER: AppId[] = ["welcome", "about", "projects", "contact"];
-
+const BASE_APP_IDS: BaseAppId[] = ["welcome", "about", "projects", "contact"];
 const TASKBAR_H = 48;
+
+const projectWindowId = (projectId: ProjectId): ProjectWindowId => `project:${projectId}`;
+const isProjectWindowId = (id: WindowId): id is ProjectWindowId => id.startsWith("project:");
+const projectIdFromWindow = (id: ProjectWindowId): ProjectId => id.slice("project:".length) as ProjectId;
 
 const closedWindow = (): WindowVisualState => ({
   open: false,
   minimized: false,
   maximized: false,
   z: 0,
-  x: -1, // -1 = aún sin posición asignada
+  x: -1,
   y: -1,
 });
+
+type WindowMap = Partial<Record<WindowId, WindowVisualState>>;
+
+interface WindowManagerState {
+  windows: WindowMap;
+  windowIds: WindowId[];
+  activeId: WindowId | null;
+  nextZ: number;
+}
+
+type WindowManagerAction =
+  | { type: "open"; id: WindowId; position: { x: number; y: number }; mobile: boolean }
+  | { type: "focus"; id: WindowId }
+  | { type: "minimize"; id: WindowId }
+  | { type: "close"; id: WindowId }
+  | { type: "toggleMaximize"; id: WindowId }
+  | { type: "move"; id: WindowId; x: number; y: number }
+  | { type: "viewport"; width: number; height: number; mobile: boolean };
+
+const initialWindows: WindowMap = {
+  welcome: closedWindow(),
+  about: closedWindow(),
+  projects: closedWindow(),
+  contact: closedWindow(),
+};
+
+const initialManagerState: WindowManagerState = {
+  windows: initialWindows,
+  windowIds: [...BASE_APP_IDS],
+  activeId: null,
+  nextZ: 10,
+};
+
+function topVisibleWindow(
+  windows: WindowMap,
+  windowIds: WindowId[],
+  excluded?: WindowId,
+): WindowId | null {
+  let best: WindowId | null = null;
+  let bestZ = -1;
+
+  for (const id of windowIds) {
+    if (id === excluded) continue;
+    const win = windows[id];
+    if (win?.open && !win.minimized && win.z > bestZ) {
+      best = id;
+      bestZ = win.z;
+    }
+  }
+
+  return best;
+}
+
+function configuredWidth(id: WindowId): number {
+  return isProjectWindowId(id) ? 920 : BASE_APP_DEFS[id].width;
+}
+
+function windowManagerReducer(
+  state: WindowManagerState,
+  action: WindowManagerAction,
+): WindowManagerState {
+  const current = "id" in action ? state.windows[action.id] : undefined;
+
+  switch (action.type) {
+    case "open": {
+      const previous = current ?? closedWindow();
+      const z = state.nextZ + 1;
+      const needsPosition = previous.x < 0 || previous.y < 0;
+      const windows = {
+        ...state.windows,
+        [action.id]: {
+          ...previous,
+          open: true,
+          minimized: false,
+          maximized: action.mobile ? true : previous.maximized,
+          z,
+          x: needsPosition ? action.position.x : previous.x,
+          y: needsPosition ? action.position.y : previous.y,
+        },
+      };
+
+      return {
+        windows,
+        windowIds: state.windowIds.includes(action.id)
+          ? state.windowIds
+          : [...state.windowIds, action.id],
+        activeId: action.id,
+        nextZ: z,
+      };
+    }
+    case "focus": {
+      if (!current?.open) return state;
+      const z = state.nextZ + 1;
+      return {
+        ...state,
+        windows: {
+          ...state.windows,
+          [action.id]: { ...current, minimized: false, z },
+        },
+        activeId: action.id,
+        nextZ: z,
+      };
+    }
+    case "minimize": {
+      if (!current?.open) return state;
+      const windows = {
+        ...state.windows,
+        [action.id]: { ...current, minimized: true },
+      };
+      return {
+        ...state,
+        windows,
+        activeId: state.activeId === action.id
+          ? topVisibleWindow(windows, state.windowIds, action.id)
+          : state.activeId,
+      };
+    }
+    case "close": {
+      if (!current) return state;
+      const windows = {
+        ...state.windows,
+        [action.id]: {
+          ...current,
+          open: false,
+          minimized: false,
+          maximized: false,
+        },
+      };
+      return {
+        ...state,
+        windows,
+        activeId: state.activeId === action.id
+          ? topVisibleWindow(windows, state.windowIds, action.id)
+          : state.activeId,
+      };
+    }
+    case "toggleMaximize":
+      if (!current?.open) return state;
+      return {
+        ...state,
+        windows: {
+          ...state.windows,
+          [action.id]: { ...current, maximized: !current.maximized },
+        },
+      };
+    case "move":
+      if (!current?.open || current.maximized) return state;
+      return {
+        ...state,
+        windows: {
+          ...state.windows,
+          [action.id]: { ...current, x: action.x, y: action.y },
+        },
+      };
+    case "viewport": {
+      const windows = { ...state.windows };
+      for (const id of state.windowIds) {
+        const win = windows[id];
+        if (!win) continue;
+        if (action.mobile && win.open) {
+          windows[id] = { ...win, maximized: true };
+          continue;
+        }
+        if (win.x < 0 || win.y < 0) continue;
+        const renderedWidth = Math.min(configuredWidth(id), action.width * 0.96);
+        const maxX = Math.max(0, action.width - renderedWidth);
+        const maxY = Math.max(0, action.height - TASKBAR_H - 48);
+        windows[id] = {
+          ...win,
+          x: Math.min(Math.max(0, win.x), maxX),
+          y: Math.min(Math.max(0, win.y), maxY),
+        };
+      }
+      return { ...state, windows };
+    }
+  }
+}
+
+function viewportSize() {
+  if (typeof window === "undefined") return { width: 1280, height: 800 };
+  return {
+    width: window.visualViewport?.width ?? window.innerWidth,
+    height: window.visualViewport?.height ?? window.innerHeight,
+  };
+}
+
+function isMobileViewport() {
+  return typeof window !== "undefined" && window.innerWidth < 768;
+}
+
+function initialPosition(id: WindowId): { x: number; y: number } {
+  const viewport = viewportSize();
+  const width = Math.min(configuredWidth(id), viewport.width * 0.96);
+  const configuredHeight = isProjectWindowId(id) ? 680 : BASE_APP_DEFS[id].height;
+  const height = Math.min(configuredHeight, viewport.height - TASKBAR_H);
+
+  if (id === "welcome") {
+    return {
+      x: Math.max(8, (viewport.width - width) / 2),
+      y: Math.max(8, (viewport.height - TASKBAR_H - height) / 2),
+    };
+  }
+
+  const index = isProjectWindowId(id)
+    ? BASE_APP_IDS.length + PROJECT_IDS.indexOf(projectIdFromWindow(id))
+    : BASE_APP_IDS.indexOf(id);
+
+  return {
+    x: Math.max(8, Math.min(74 + index * 34, viewport.width - width - 12)),
+    y: Math.max(8, Math.min(22 + index * 28, viewport.height - TASKBAR_H - 180)),
+  };
+}
 
 // Sparkles sutiles sobre el wallpaper
 const desktopSparkles = [
@@ -53,162 +287,173 @@ const desktopSparkles = [
 export function Desktop({ dict }: { dict: Dictionary }) {
   const [mounted, setMounted] = useState(false);
   const [booted, setBooted] = useState(false);
-  const [wins, setWins] = useState<Record<AppId, WindowVisualState>>({
-    welcome: closedWindow(),
-    about: closedWindow(),
-    projects: closedWindow(),
-    contact: closedWindow(),
-  });
-  const [activeId, setActiveId] = useState<AppId | null>(null);
+  const [manager, dispatch] = useReducer(windowManagerReducer, initialManagerState);
   const [startOpen, setStartOpen] = useState(false);
-  const [selectedIcon, setSelectedIcon] = useState<AppId | null>(null);
+  const [selectedIcon, setSelectedIcon] = useState<BaseAppId | null>(null);
 
-  const desktopRef = useRef<HTMLDivElement>(null);
-  const zRef = useRef(10); // contador de z-index (evita estado obsoleto)
+  const dragBoundsRef = useRef<HTMLDivElement>(null);
   const welcomeOpenedRef = useRef(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  const isMobileNow = () =>
-    typeof window !== "undefined" && window.innerWidth < 768;
-
-  const initialPos = (id: AppId): { x: number; y: number } => {
-    const vw = window.innerWidth;
-    const vh = window.innerHeight;
-    const w = Math.min(APP_DEFS[id].width, vw * 0.96);
-    if (id === "welcome") {
-      // Centrada, dejando hueco para la taskbar
-      return {
-        x: Math.max(8, (vw - w) / 2),
-        y: Math.max(10, (vh - TASKBAR_H - 520) / 2),
-      };
-    }
-    const i = APP_ORDER.indexOf(id);
-    return {
-      x: Math.max(8, Math.min(110 + i * 42, vw - w - 16)),
-      y: Math.max(8, Math.min(30 + i * 34, vh - TASKBAR_H - 280)),
+  useEffect(() => {
+    let frame = 0;
+    const updateViewport = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        const viewport = viewportSize();
+        dispatch({
+          type: "viewport",
+          width: viewport.width,
+          height: viewport.height,
+          mobile: window.innerWidth < 768,
+        });
+      });
     };
-  };
 
-  const openApp = useCallback((id: AppId) => {
-    setStartOpen(false);
-    const z = ++zRef.current;
-    setWins((prev) => {
-      const w = prev[id];
-      const needsPos = w.x < 0 || w.y < 0;
-      const pos = needsPos && typeof window !== "undefined" ? initialPos(id) : { x: w.x, y: w.y };
-      return {
-        ...prev,
-        [id]: {
-          ...w,
-          open: true,
-          minimized: false,
-          maximized: isMobileNow() ? true : w.maximized,
-          z,
-          x: pos.x,
-          y: pos.y,
-        },
-      };
-    });
-    setActiveId(id);
+    updateViewport();
+    window.addEventListener("resize", updateViewport);
+    window.addEventListener("orientationchange", updateViewport);
+    window.visualViewport?.addEventListener("resize", updateViewport);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("resize", updateViewport);
+      window.removeEventListener("orientationchange", updateViewport);
+      window.visualViewport?.removeEventListener("resize", updateViewport);
+    };
   }, []);
+
+  const openWindow = useCallback((id: WindowId) => {
+    setStartOpen(false);
+    dispatch({
+      type: "open",
+      id,
+      position: initialPosition(id),
+      mobile: isMobileViewport(),
+    });
+  }, []);
+
+  const openProject = useCallback((id: ProjectId) => {
+    openWindow(projectWindowId(id));
+  }, [openWindow]);
 
   // Auto-abrir la ventana de bienvenida tras el boot
   useEffect(() => {
     if (booted && !welcomeOpenedRef.current) {
       welcomeOpenedRef.current = true;
-      openApp("welcome");
+      openWindow("welcome");
     }
-  }, [booted, openApp]);
+  }, [booted, openWindow]);
 
-  const closeApp = useCallback((id: AppId) => {
-    setWins((prev) => ({ ...prev, [id]: { ...prev[id], open: false, minimized: false, maximized: false } }));
-    setActiveId((currentActive) => {
-      if (currentActive !== id) return currentActive;
-      // Pasar el foco a la ventana abierta más alta
-      let best: AppId | null = null;
-      let bestZ = -1;
-      for (const otherId of APP_ORDER) {
-        if (otherId === id) continue;
-        const w = wins[otherId];
-        if (w.open && !w.minimized && w.z > bestZ) {
-          best = otherId;
-          bestZ = w.z;
-        }
-      }
-      return best;
-    });
-  }, [wins]);
-
-  const focusApp = useCallback((id: AppId) => {
-    const z = ++zRef.current;
-    setWins((prev) => ({
-      ...prev,
-      [id]: { ...prev[id], minimized: false, z },
-    }));
-    setActiveId(id);
+  const closeWindow = useCallback((id: WindowId) => {
+    dispatch({ type: "close", id });
   }, []);
 
-  const minimizeApp = useCallback((id: AppId) => {
-    setWins((prev) => ({ ...prev, [id]: { ...prev[id], minimized: true } }));
-    setActiveId((currentActive) => {
-      if (currentActive !== id) return currentActive;
-      let best: AppId | null = null;
-      let bestZ = -1;
-      for (const otherId of APP_ORDER) {
-        if (otherId === id) continue;
-        const w = wins[otherId];
-        if (w.open && !w.minimized && w.z > bestZ) {
-          best = otherId;
-          bestZ = w.z;
-        }
-      }
-      return best;
-    });
-  }, [wins]);
-
-  const toggleMaximizeApp = useCallback((id: AppId) => {
-    setWins((prev) => ({ ...prev, [id]: { ...prev[id], maximized: !prev[id].maximized } }));
+  const focusWindow = useCallback((id: WindowId) => {
+    dispatch({ type: "focus", id });
   }, []);
 
-  // Clic en un botón de la taskbar: enfocar/restaurar, o minimizar si ya está activa
-  const handleTaskClick = useCallback((id: AppId) => {
-    const w = wins[id];
-    if (activeId === id && !w.minimized) {
-      minimizeApp(id);
+  const minimizeWindow = useCallback((id: WindowId) => {
+    dispatch({ type: "minimize", id });
+  }, []);
+
+  const toggleMaximizeWindow = useCallback((id: WindowId) => {
+    dispatch({ type: "toggleMaximize", id });
+  }, []);
+
+  const persistWindowPosition = useCallback((id: WindowId, x: number, y: number) => {
+    const viewport = viewportSize();
+    const width = Math.min(configuredWidth(id), viewport.width * 0.96);
+    const maxX = Math.max(0, viewport.width - width);
+    const maxY = Math.max(0, viewport.height - TASKBAR_H - 48);
+    dispatch({
+      type: "move",
+      id,
+      x: Math.round(Math.min(Math.max(0, x), maxX)),
+      y: Math.round(Math.min(Math.max(0, y), maxY)),
+    });
+  }, []);
+
+  // Clic en taskbar: enfocar/restaurar, o minimizar si ya está activa.
+  const handleTaskClick = useCallback((id: WindowId) => {
+    const win = manager.windows[id];
+    if (!win) return;
+    if (manager.activeId === id && !win.minimized) {
+      minimizeWindow(id);
     } else {
-      focusApp(id);
+      focusWindow(id);
     }
-  }, [wins, activeId, minimizeApp, focusApp]);
+  }, [manager.windows, manager.activeId, minimizeWindow, focusWindow]);
 
-  // Escape: cierra el menú de inicio o la ventana activa
+  // Escape cierra primero Inicio; después, la ventana activa.
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key !== "Escape") return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
       if (startOpen) {
         setStartOpen(false);
-      } else if (activeId) {
-        closeApp(activeId);
+      } else if (manager.activeId) {
+        closeWindow(manager.activeId);
       }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [startOpen, activeId, closeApp]);
+  }, [startOpen, manager.activeId, closeWindow]);
 
   const finishBoot = useCallback(() => setBooted(true), []);
 
-  const appTitle = (id: AppId) => dict.navigation[APP_DEFS[id].titleKey];
+  const baseAppTitle = (id: BaseAppId) => dict.navigation[BASE_APP_DEFS[id].titleKey];
 
-  const renderAppBody = (id: AppId) => {
+  const windowDefinition = (id: WindowId): WindowDef => {
+    if (isProjectWindowId(id)) {
+      const projectId = projectIdFromWindow(id);
+      return {
+        icon: FileImage,
+        title: dict.projects.items[projectId].title,
+        width: 920,
+        height: 680,
+      };
+    }
+
+    const definition = BASE_APP_DEFS[id];
+    return {
+      icon: definition.icon,
+      title: baseAppTitle(id),
+      width: definition.width,
+      height: definition.height,
+    };
+  };
+
+  const renderWindowBody = (id: WindowId, maximized: boolean) => {
+    if (isProjectWindowId(id)) {
+      return <ProjectDetailApp dict={dict} projectId={projectIdFromWindow(id)} />;
+    }
+
     switch (id) {
-      case "welcome":  return <WelcomeApp dict={dict} />;
-      case "about":    return <AboutApp dict={dict} />;
-      case "projects": return <ProjectsApp dict={dict} />;
-      case "contact":  return <ContactApp dict={dict} />;
+      case "welcome":
+        return <WelcomeApp dict={dict} maximized={maximized} />;
+      case "about":
+        return <AboutApp dict={dict} />;
+      case "projects":
+        return <ProjectsApp dict={dict} onOpenProject={openProject} />;
+      case "contact":
+        return <ContactApp dict={dict} />;
     }
   };
+
+  const taskbarApps = manager.windowIds.flatMap((id) => {
+    const win = manager.windows[id];
+    if (!win) return [];
+    const definition = windowDefinition(id);
+    return [{
+      id,
+      title: definition.title,
+      icon: definition.icon,
+      open: win.open,
+      minimized: win.minimized,
+    }];
+  });
 
   return (
     <main className="os-desktop">
@@ -218,11 +463,11 @@ export function Desktop({ dict }: { dict: Dictionary }) {
       </div>
 
       {/* Burbujas de cromo + sparkles */}
-      <div aria-hidden="true" className="bubble-deco hidden md:block h-32 w-32 right-[6%] top-[10%]" />
-      <div aria-hidden="true" className="bubble-deco hidden md:block h-16 w-16 right-[22%] bottom-[18%]" />
-      {desktopSparkles.map((sparkle, i) => (
+      <div aria-hidden="true" className="bubble-deco hidden h-32 w-32 right-[6%] top-[10%] md:block" />
+      <div aria-hidden="true" className="bubble-deco hidden h-16 w-16 right-[22%] bottom-[18%] md:block" />
+      {desktopSparkles.map((sparkle, index) => (
         <motion.span
-          key={i}
+          key={index}
           aria-hidden="true"
           className={`flare pointer-events-none absolute select-none z-10 ${sparkle.className}`}
           animate={{
@@ -241,49 +486,61 @@ export function Desktop({ dict }: { dict: Dictionary }) {
         </motion.span>
       ))}
 
-      {/* Área de escritorio (por encima de la taskbar) */}
+      {/* Los límites de arrastre incluyen la zona bajo la taskbar. */}
+      <div ref={dragBoundsRef} className="pointer-events-none absolute inset-0" aria-hidden="true" />
+
+      {/* Área de escritorio utilizable, siempre por encima de la taskbar. */}
       <div
-        ref={desktopRef}
-        className="absolute inset-x-0 top-0 bottom-12"
-        onPointerDown={(e) => {
-          if (e.target === e.currentTarget) setSelectedIcon(null);
+        className="desktop-workspace"
+        onPointerDown={(event) => {
+          if (event.target === event.currentTarget) setSelectedIcon(null);
         }}
       >
         {mounted && booted && (
           <>
             <div className="desktop-icons">
-              {APP_ORDER.map((id) => (
+              {BASE_APP_IDS.map((id) => (
                 <DesktopIcon
                   key={id}
-                  icon={APP_DEFS[id].icon}
-                  label={appTitle(id)}
+                  icon={BASE_APP_DEFS[id].icon}
+                  label={baseAppTitle(id)}
                   selected={selectedIcon === id}
                   onSelect={() => setSelectedIcon(id)}
-                  onOpen={() => openApp(id)}
+                  onOpen={() => openWindow(id)}
                 />
               ))}
             </div>
 
             <AnimatePresence>
-              {APP_ORDER.map((id) => {
-                const w = wins[id];
-                if (!w.open) return null;
+              {manager.windowIds.map((id) => {
+                const win = manager.windows[id];
+                if (!win?.open) return null;
+                const definition = windowDefinition(id);
+                const bodyClassName = id === "projects"
+                  ? "win-body-explorer"
+                  : isProjectWindowId(id)
+                    ? "win-body-project overflow-y-auto"
+                    : "";
+
                 return (
                   <OsWindow
                     key={id}
-                    title={appTitle(id)}
-                    icon={APP_DEFS[id].icon}
-                    win={w}
-                    active={activeId === id && !w.minimized}
-                    width={APP_DEFS[id].width}
-                    constraintsRef={desktopRef}
+                    title={definition.title}
+                    icon={definition.icon}
+                    win={win}
+                    active={manager.activeId === id && !win.minimized}
+                    width={definition.width}
+                    height={definition.height}
+                    constraintsRef={dragBoundsRef}
                     os={dict.os}
-                    onFocus={() => focusApp(id)}
-                    onClose={() => closeApp(id)}
-                    onMinimize={() => minimizeApp(id)}
-                    onToggleMaximize={() => toggleMaximizeApp(id)}
+                    bodyClassName={bodyClassName}
+                    onFocus={() => focusWindow(id)}
+                    onClose={() => closeWindow(id)}
+                    onMinimize={() => minimizeWindow(id)}
+                    onToggleMaximize={() => toggleMaximizeWindow(id)}
+                    onPositionChange={(x, y) => persistWindowPosition(id, x, y)}
                   >
-                    {renderAppBody(id)}
+                    {renderWindowBody(id, win.maximized)}
                   </OsWindow>
                 );
               })}
@@ -292,39 +549,33 @@ export function Desktop({ dict }: { dict: Dictionary }) {
         )}
       </div>
 
-      {/* Menú de inicio */}
+      {/* Inicio solo muestra aplicaciones base; los proyectos viven en taskbar. */}
       <AnimatePresence>
         {startOpen && (
           <StartMenu
-            apps={APP_ORDER.map((id) => ({
+            apps={BASE_APP_IDS.map((id) => ({
               id,
-              title: appTitle(id),
-              icon: APP_DEFS[id].icon,
+              title: baseAppTitle(id),
+              icon: BASE_APP_DEFS[id].icon,
             }))}
-            onOpenApp={(id) => openApp(id as AppId)}
+            onOpenApp={(id) => openWindow(id as BaseAppId)}
             onClose={() => setStartOpen(false)}
           />
         )}
       </AnimatePresence>
 
-      {/* Taskbar siempre presente */}
       <Taskbar
-        apps={APP_ORDER.map((id) => ({
-          id,
-          title: appTitle(id),
-          icon: APP_DEFS[id].icon,
-          open: wins[id].open,
-          minimized: wins[id].minimized,
-        }))}
-        activeId={activeId}
+        apps={taskbarApps}
+        activeId={manager.activeId}
         startOpen={startOpen}
         startLabel={dict.os.start}
+        taskbarLabel={dict.os.taskbar}
+        clockLabel={dict.os.clock}
         themeSwitcherLabel={dict.hero.changeTheme}
-        onStartToggle={() => setStartOpen((v) => !v)}
-        onTaskClick={(id) => handleTaskClick(id as AppId)}
+        onStartToggle={() => setStartOpen((value) => !value)}
+        onTaskClick={(id) => handleTaskClick(id as WindowId)}
       />
 
-      {/* Boot splash por encima de todo */}
       <AnimatePresence>
         {!booted && <BootSplash onDone={finishBoot} />}
       </AnimatePresence>

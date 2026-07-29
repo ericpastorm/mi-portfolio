@@ -1,7 +1,7 @@
 // components/Window.tsx
 "use client";
 
-import { useEffect, useRef, type ReactNode, type RefObject } from "react";
+import { useEffect, type ReactNode, type RefObject } from "react";
 import { motion, useDragControls, useMotionValue, animate } from "framer-motion";
 import type { LucideIcon } from "lucide-react";
 
@@ -20,6 +20,7 @@ interface OsWindowProps {
   win: WindowVisualState;
   active: boolean;
   width: number;
+  height: number;
   constraintsRef: RefObject<HTMLDivElement | null>;
   os: {
     minimize: string;
@@ -31,6 +32,8 @@ interface OsWindowProps {
   onClose: () => void;
   onMinimize: () => void;
   onToggleMaximize: () => void;
+  onPositionChange: (x: number, y: number) => void;
+  bodyClassName?: string;
   children: ReactNode;
 }
 
@@ -40,38 +43,32 @@ export function OsWindow({
   win,
   active,
   width,
+  height,
   constraintsRef,
   os,
   onFocus,
   onClose,
   onMinimize,
   onToggleMaximize,
+  onPositionChange,
+  bodyClassName = "",
   children,
 }: OsWindowProps) {
   const controls = useDragControls();
-  // La posición vive en motion values: framer-motion escribe los deltas del drag aquí,
-  // y nosotros podemos animar a 0,0 al maximizar y restaurar después.
   const x = useMotionValue(win.x);
   const y = useMotionValue(win.y);
-  const savedPos = useRef<{ x: number; y: number } | null>(null);
 
   useEffect(() => {
-    if (win.maximized) {
-      savedPos.current = { x: x.get(), y: y.get() };
-      animate(x, 0, { duration: 0.22, ease: "easeOut" });
-      animate(y, 0, { duration: 0.22, ease: "easeOut" });
-    } else if (savedPos.current) {
-      const s = savedPos.current;
-      animate(x, s.x, { duration: 0.22, ease: "easeOut" });
-      animate(y, s.y, { duration: 0.22, ease: "easeOut" });
-      savedPos.current = null;
-    }
-  }, [win.maximized, x, y]);
+    animate(x, win.maximized ? 0 : win.x, { duration: 0.22, ease: "easeOut" });
+    animate(y, win.maximized ? 0 : win.y, { duration: 0.22, ease: "easeOut" });
+  }, [win.maximized, win.x, win.y, x, y]);
 
   return (
     <motion.div
       role="dialog"
       aria-label={title}
+      aria-hidden={win.minimized}
+      inert={win.minimized ? true : undefined}
       initial={{ opacity: 0, scale: 0.92 }}
       animate={{
         opacity: win.minimized ? 0 : 1,
@@ -85,6 +82,7 @@ export function OsWindow({
       dragConstraints={constraintsRef}
       dragElastic={0.06}
       dragMomentum={false}
+      onDragEnd={() => onPositionChange(x.get(), y.get())}
       onPointerDown={onFocus}
       className={`os-window window-panel ${active ? "os-window-active" : ""} ${
         win.maximized ? "h-full w-full rounded-none" : "max-h-full rounded-xl"
@@ -94,7 +92,10 @@ export function OsWindow({
         y,
         zIndex: win.z,
         width: win.maximized ? "100%" : `min(${width}px, 96vw)`,
+        height: win.maximized ? "100%" : `min(${height}px, 100%)`,
+        maxHeight: "100%",
         pointerEvents: win.minimized ? "none" : "auto",
+        visibility: win.minimized ? "hidden" : "visible",
       }}
     >
       {/* Barra de título real: arrastra desde aquí */}
@@ -147,7 +148,11 @@ export function OsWindow({
       </div>
 
       {/* Cuerpo con scroll interno */}
-      <div className="win-body flex-1 overflow-y-auto px-4 pb-5 pt-4 md:px-6">
+      <div
+        className={`win-body min-h-0 flex-1 ${
+          bodyClassName || "overflow-y-auto px-3 pb-4 pt-3 md:px-6 md:pb-5 md:pt-4"
+        }`}
+      >
         {children}
       </div>
     </motion.div>
