@@ -1,7 +1,12 @@
 "use client";
 
 import { ArrowUpRight, Github, Radio, Sparkles } from "lucide-react";
-import { getLocalizedProject, type ProjectId } from "@/data/projects";
+import { FaApple, FaGooglePlay } from "react-icons/fa";
+import {
+  getLocalizedProject,
+  hasPublicProjectLink,
+  type ProjectId,
+} from "@/data/projects";
 import { ProjectPreview } from "@/components/ProjectPreview";
 import { RichText } from "@/components/RichText";
 import type { Dictionary } from "@/types";
@@ -9,13 +14,14 @@ import type { Dictionary } from "@/types";
 export function ProjectDetailApp({ dict, projectId }: { dict: Dictionary; projectId: ProjectId }) {
   const project = getLocalizedProject(dict, projectId);
   const explorer = dict.projects.explorer;
+  const hasActions = hasPublicProjectLink(project);
 
   return (
     <article className="project-detail">
       <div className="project-detail-visual">
         <ProjectPreview project={project} className="project-detail-preview" />
         <div className="project-detail-visual-meta">
-          <span><Radio aria-hidden="true" />{project.demoUrl ? explorer.publicStatus : explorer.privateStatus}</span>
+          <span><Radio aria-hidden="true" />{hasActions ? explorer.publicStatus : explorer.privateStatus}</span>
           <span>{project.image.split(".").pop()?.toUpperCase()} {explorer.screenshot}</span>
         </div>
       </div>
@@ -42,8 +48,41 @@ export function ProjectDetailApp({ dict, projectId }: { dict: Dictionary; projec
           {project.tags.map((tag) => <li key={tag}>{tag}</li>)}
         </ul>
 
-        {(project.demoUrl || project.codeUrl) && (
+        {hasActions && (
           <div className="project-detail-actions">
+            {project.productUrl && (
+              <a
+                href={project.productUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="project-action project-action-primary"
+              >
+                {dict.projects.productPage}
+                <ArrowUpRight aria-hidden="true" />
+              </a>
+            )}
+            {project.appStoreUrl && (
+              <a
+                href={project.appStoreUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="project-action project-action-secondary project-action-store"
+              >
+                <FaApple aria-hidden="true" />
+                {dict.projects.appStore}
+              </a>
+            )}
+            {project.playStoreUrl && (
+              <a
+                href={project.playStoreUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="project-action project-action-secondary project-action-store"
+              >
+                <FaGooglePlay aria-hidden="true" />
+                {dict.projects.googlePlay}
+              </a>
+            )}
             {project.demoUrl && (
               <a
                 href={project.demoUrl}

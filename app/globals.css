@@ -2106,13 +2106,6 @@
       linear-gradient(135deg, #6651e8, #27c5c3);
   }
 
-  .project-preview-calculatorx .project-preview-fallback {
-    background:
-      linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px) 0 0 / 18px 18px,
-      linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px) 0 0 / 18px 18px,
-      linear-gradient(135deg, #151a40, #3a46a8 62%, #25b8c7);
-  }
-
   .project-preview-grid {
     position: absolute;
     inset: 0;

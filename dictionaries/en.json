@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "title": "Eric Pastor | Software Developer - Web, AI & Automation",
-    "description": "Portfolio of Eric Pastor, software developer based in Tarragona, Spain, and founder of Basalt Works. Specialized in Next.js, React, AI automations and internal tools for businesses.",
-    "keywords": ["Software Developer", "Web Development", "AI Automation", "Basalt Works", "React", "Next.js", "Tarragona", "Eric Pastor", "Portfolio", "Full Stack"]
+    "title": "Eric Pastor — Software Developer, Mobile Apps & AI",
+    "description": "Eric Pastor, software developer in Tarragona and Basalt Works founder. Web, mobile, AI agents, automation and internal tools in an interactive Y2K desktop.",
+    "keywords": ["Eric Pastor", "Software Developer Tarragona", "Web Development", "Mobile App Development", "React Native", "Expo", "AI Agents", "AI Automation", "Internal Tools", "Basalt Works", "Interactive Portfolio"]
   },
   "navigation": {
     "home": "Home",
@@ -32,6 +32,9 @@
     "title": "Projects",
     "subtitle": "A selection of client work and personal projects.",
     "liveDemo": "Live Demo",
+    "productPage": "Product Page",
+    "appStore": "App Store",
+    "googlePlay": "Google Play",
     "viewCode": "View Code",
     "explorer": {
       "back": "Back",
@@ -50,6 +53,8 @@
       "categories": {
         "agency": "Agency",
         "automation": "AI automation",
+        "mobileApp": "Mobile productivity app",
+        "mobileGame": "Mobile game",
         "client": "Client work",
         "personal": "Personal project"
       }
@@ -69,6 +74,24 @@
         "tags": ["AI Agents", "Hermes", "Automation", "Hetzner"],
         "demoUrl": null,
         "codeUrl": null
+      },
+      "spindone": {
+        "title": "SpinDone",
+        "description": "A local-first productivity app that turns configured work and leisure activities into weighted, time-blocked daily or weekly plans through a playful spin mechanic.",
+        "tags": ["React Native", "Expo", "TypeScript", "Zustand"],
+        "metric": "6 languages · Daily and weekly planning"
+      },
+      "animalgacha": {
+        "title": "Animal Gacha",
+        "description": "A local-first wildlife card collector where players open packs, build a 300-animal collection grounded in real conservation data, and use their cards in turn-based PvE combat.",
+        "tags": ["React Native", "Expo", "TypeScript", "RevenueCat"],
+        "metric": "300 animals · 48 achievements"
+      },
+      "dungeonquiz": {
+        "title": "Dungeon Quiz",
+        "description": "A quiz roguelike in which correct answers power turn-based combat through procedurally generated dungeon floors, enemies, bosses, loot, and persistent character progression.",
+        "tags": ["React Native", "Expo", "TypeScript", "Zustand"],
+        "metric": "1,800 questions · 5 biomes"
       },
       "gaelsantano": {
         "title": "Gael Santano",
@@ -91,26 +114,12 @@
         "demoUrl": "https://icoreven.com/",
         "codeUrl": null
       },
-      "portfolio": {
-        "title": "My Personal Portfolio",
-        "description": "A personal website to showcase my skills and projects, built with the latest technologies from the React ecosystem.",
-        "tags": ["React", "Next.js", "Tailwind CSS", "TypeScript"],
-        "demoUrl": "#",
-        "codeUrl": "https://github.com/ericpastorm/mi-portfolio"
-      },
       "sketchpad": {
         "title": "Sketchpad",
         "description": "An online drawing pad to unleash your creativity. Draw, color and export your creations.",
         "tags": ["React", "Tailwind CSS", "Vite"],
         "demoUrl": "https://ericpastorm.github.io/sketchpad/",
         "codeUrl": "https://github.com/ericpastorm/sketchpad"
-      },
-      "calculatorx": {
-        "title": "CalculatorX",
-        "description": "A modern and complete web calculator with an interactive exam mode where you can practice mathematics.",
-        "tags": ["Vite", "Tailwind CSS", "JavaScript"],
-        "demoUrl": "https://ericpastorm.github.io/CalculatorX/",
-        "codeUrl": "https://github.com/ericpastorm/CalculatorX/"
       }
     }
   },

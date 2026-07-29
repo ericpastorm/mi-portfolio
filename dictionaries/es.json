@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "title": "Eric Pastor | Desarrollador de Software - Web, IA y Automatización",
-    "description": "Portfolio de Eric Pastor, desarrollador de software en Tarragona, España, y fundador de Basalt Works. Especializado en Next.js, React, automatizaciones con IA y herramientas internas para empresas.",
-    "keywords": ["Desarrollador de Software", "Desarrollo Web", "Automatización con IA", "Basalt Works", "React", "Next.js", "Tarragona", "Eric Pastor", "Portfolio", "Full Stack"]
+    "title": "Eric Pastor — Desarrollo Web, Apps Móviles e IA",
+    "description": "Eric Pastor, desarrollador de software en Tarragona y fundador de Basalt Works. Web, apps móviles, agentes y automatizaciones IA, herramientas internas y portfolio Y2K.",
+    "keywords": ["Eric Pastor", "Desarrollador de software Tarragona", "Desarrollo web", "Desarrollo móvil", "React Native", "Expo", "Agentes de IA", "Automatización con IA", "Herramientas internas", "Basalt Works", "Portfolio interactivo"]
   },
   "navigation": {
     "home": "Inicio",
@@ -32,6 +32,9 @@
     "title": "Proyectos",
     "subtitle": "Una selección de trabajos para clientes y proyectos personales.",
     "liveDemo": "Visitar",
+    "productPage": "Página del producto",
+    "appStore": "App Store",
+    "googlePlay": "Google Play",
     "viewCode": "Ver Código",
     "explorer": {
       "back": "Atrás",
@@ -50,6 +53,8 @@
       "categories": {
         "agency": "Agencia",
         "automation": "Automatización IA",
+        "mobileApp": "Aplicación móvil de productividad",
+        "mobileGame": "Juego móvil",
         "client": "Trabajo de cliente",
         "personal": "Proyecto personal"
       }
@@ -69,6 +74,24 @@
         "tags": ["AI Agents", "Hermes", "Automatización", "Hetzner"],
         "demoUrl": null,
         "codeUrl": null
+      },
+      "spindone": {
+        "title": "SpinDone",
+        "description": "Una aplicación de productividad local que convierte actividades de trabajo y ocio configuradas por el usuario en planes diarios o semanales ponderados y organizados por bloques de tiempo mediante una mecánica de ruleta.",
+        "tags": ["React Native", "Expo", "TypeScript", "Zustand"],
+        "metric": "6 idiomas · Planificación diaria y semanal"
+      },
+      "animalgacha": {
+        "title": "Animal Gacha",
+        "description": "Un juego de colección de cartas de fauna que funciona de forma local, donde los jugadores abren sobres, completan una colección de 300 animales basada en datos reales de conservación y usan sus cartas en combates PvE por turnos.",
+        "tags": ["React Native", "Expo", "TypeScript", "RevenueCat"],
+        "metric": "300 animales · 48 logros"
+      },
+      "dungeonquiz": {
+        "title": "Dungeon Quiz",
+        "description": "Un roguelike de preguntas en el que las respuestas correctas impulsan combates por turnos a través de plantas de mazmorra generadas proceduralmente, enemigos, jefes, botín y progresión persistente del personaje.",
+        "tags": ["React Native", "Expo", "TypeScript", "Zustand"],
+        "metric": "1.800 preguntas · 5 biomas"
       },
       "gaelsantano": {
         "title": "Gael Santano",
@@ -91,26 +114,12 @@
         "demoUrl": "https://icoreven.com/",
         "codeUrl": null
       },
-      "portfolio": {
-        "title": "Mi Portfolio Personal",
-        "description": "Una web personal para mostrar mis habilidades y proyectos, construida con las últimas tecnologías del ecosistema de React.",
-        "tags": ["React", "Next.js", "Tailwind CSS", "TypeScript"],
-        "demoUrl": "#",
-        "codeUrl": "https://github.com/ericpastorm/mi-portfolio"
-      },
       "sketchpad": {
         "title": "Sketchpad",
         "description": "Un bloc de dibujo online para dar rienda suelta a tu creatividad. Dibuja, colorea y exporta tus creaciones.",
         "tags": ["React", "Tailwind CSS", "Vite"],
         "demoUrl": "https://ericpastorm.github.io/sketchpad/",
         "codeUrl": "https://github.com/ericpastorm/sketchpad"
-      },
-      "calculatorx": {
-        "title": "CalculatorX",
-        "description": "Una calculadora web moderna y completa con un modo examen interactivo donde practicar matemáticas.",
-        "tags": ["Vite", "Tailwind CSS", "JavaScript"],
-        "demoUrl": "https://ericpastorm.github.io/CalculatorX/",
-        "codeUrl": "https://github.com/ericpastorm/CalculatorX/"
       }
     }
   },

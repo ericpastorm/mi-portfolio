@@ -22,10 +22,13 @@ export const ThemeSwitcher = ({ ariaLabel }: { ariaLabel: string }) => {
   }, []);
 
   const updateFavicon = (currentTheme: 'dark' | 'light') => {
-    const favicon = document.querySelector('link[rel="icon"]') as HTMLLinkElement;
-    if (favicon) {
-      favicon.href = currentTheme === 'light' ? '/faviconLight.ico' : '/favicon.ico';
-    }
+    const iconUrl = currentTheme === 'light' ? '/icons/favicon-light.ico' : '/favicon.ico';
+    const favicons = document.querySelectorAll<HTMLLinkElement>('link[rel~="icon"]');
+    favicons.forEach((favicon) => {
+      if (favicon.type === 'image/x-icon' || favicon.href.endsWith('.ico')) {
+        favicon.href = iconUrl;
+      }
+    });
   };
 
   useEffect(() => {

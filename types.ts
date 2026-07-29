@@ -19,6 +19,9 @@ export interface LocalizedProject extends ProjectItem {
   category: ProjectCategory;
   tags: string[];
   demoUrl?: string;
+  productUrl?: string;
+  appStoreUrl?: string;
+  playStoreUrl?: string;
   codeUrl?: string;
 }
 
@@ -54,6 +57,9 @@ export interface Dictionary {
     title: string;
     subtitle: string;
     liveDemo: string;
+    productPage: string;
+    appStore: string;
+    googlePlay: string;
     viewCode: string;
     explorer: {
       back: string;

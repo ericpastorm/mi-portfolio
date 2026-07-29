@@ -1,16 +1,11 @@
 // app/[lang]/layout.tsx
 import type { Metadata } from "next";
-import { Analytics } from "@vercel/analytics/next"
-import { SpeedInsights } from "@vercel/speed-insights/next";
-import "../globals.css";
-import localFont from "next/font/local";
 import { getDictionary } from "../dictionaries";
 
-const switzer = localFont({
-  src: '../fonts/Switzer-Variable.woff2',
-  display: 'swap',
-  variable: '--font-switzer',
-});
+const SITE_URL = "https://ericpastor.dev";
+const SITE_NAME = "Eric Pastor OS";
+
+type Locale = "en" | "es";
 
 type Props = {
   children: React.ReactNode;
@@ -19,59 +14,77 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { lang } = await params;
-  const t = await getDictionary(lang as 'en' | 'es');
-  
-  // Use metadata from dictionaries if available, otherwise fallback to defaults
-  const title = t.metadata?.title || "Eric Pastor | Software Developer";
-  const description = t.metadata?.description || "Portfolio of Eric Pastor, software developer and founder of Basalt Works.";
-  
+  const activeLocale: Locale = lang === "en" ? "en" : "es";
+  const dictionary = await getDictionary(activeLocale);
+  const title = dictionary.metadata?.title ?? "Eric Pastor — Software Developer";
+  const description = dictionary.metadata?.description
+    ?? "Interactive software portfolio of Eric Pastor, founder of Basalt Works.";
+  const canonicalPath = `/${activeLocale}`;
+  const locale = activeLocale === "es" ? "es_ES" : "en_US";
+  const alternateLocale = activeLocale === "es" ? "en_US" : "es_ES";
+  const socialImage = {
+    url: `${SITE_URL}/opengraph-image`,
+    width: 1200,
+    height: 630,
+    alt: "Eric Pastor OS — Software, Mobile and AI",
+  };
+
   return {
-    title,
+    metadataBase: new URL(SITE_URL),
+    title: { absolute: title },
     description,
-    metadataBase: new URL('https://ericpastor.dev'),
+    applicationName: SITE_NAME,
+    authors: [{ name: "Eric Pastor", url: SITE_URL }],
+    creator: "Eric Pastor",
+    publisher: "Eric Pastor",
+    category: "Software development",
+    keywords: dictionary.metadata?.keywords,
     alternates: {
-      canonical: `/${lang}`,
+      canonical: canonicalPath,
       languages: {
-        'en': '/en',
-        'es': '/es',
+        en: "/en",
+        es: "/es",
+        "x-default": "/es",
+      },
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
       },
     },
     openGraph: {
+      type: "website",
+      url: `${SITE_URL}${canonicalPath}`,
       title,
       description,
-      url: `https://ericpastor.dev/${lang}`,
-      siteName: 'Eric Pastor Portfolio',
-      locale: lang,
-      type: 'website',
+      siteName: SITE_NAME,
+      locale,
+      alternateLocale: [alternateLocale],
+      images: [socialImage],
     },
     twitter: {
-      card: 'summary_large_image',
+      card: "summary_large_image",
       title,
       description,
+      images: [socialImage],
     },
     icons: {
       icon: [
-        { url: '/favicon.ico', media: '(prefers-color-scheme: dark)' },
-        { url: '/faviconLight.ico', media: '(prefers-color-scheme: light)' },
+        { url: "/favicon.ico", sizes: "any", type: "image/x-icon" },
+        { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
       ],
+      shortcut: "/favicon.ico",
+      apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
     },
-    keywords: t.metadata?.keywords,
   };
 }
 
-export default async function RootLayout({ 
-  children, 
-  params 
-}: Props) {
-  const { lang } = await params; // Resolve the promise to access `lang`
-
-  return (
-    <html lang={lang} suppressHydrationWarning className={switzer.variable}> 
-      <body>
-        {children}
-        <SpeedInsights />
-        <Analytics />
-      </body>
-    </html>
-  );
+export default function LocaleLayout({ children }: Props) {
+  return children;
 }

@@ -6,23 +6,33 @@ import type { Dictionary, LocalizedProject } from "@/types";
 export const PROJECT_IDS = [
   "basaltworks",
   "primehomes",
+  "spindone",
+  "animalgacha",
+  "dungeonquiz",
   "gaelsantano",
   "cydservicios",
   "icoreven",
-  "portfolio",
   "sketchpad",
-  "calculatorx",
 ] as const;
 
 export type ProjectId = (typeof PROJECT_IDS)[number];
 
-export type ProjectCategory = "agency" | "automation" | "client" | "personal";
+export type ProjectCategory =
+  | "agency"
+  | "automation"
+  | "mobileApp"
+  | "mobileGame"
+  | "client"
+  | "personal";
 
 export interface ProjectMetadata {
   id: ProjectId;
   image: `/projects/${string}`;
   category: ProjectCategory;
   demoUrl?: string;
+  productUrl?: string;
+  appStoreUrl?: string;
+  playStoreUrl?: string;
   codeUrl?: string;
 }
 
@@ -42,6 +52,30 @@ export const PROJECT_METADATA: Record<ProjectId, ProjectMetadata> = {
     image: "/projects/primehomes.webp",
     category: "automation",
   },
+  spindone: {
+    id: "spindone",
+    image: "/projects/spindone.webp",
+    category: "mobileApp",
+    productUrl: "https://www.basaltworks.com/spindone",
+    appStoreUrl: "https://apps.apple.com/app/id6760219447",
+    playStoreUrl: "https://play.google.com/store/apps/details?id=com.basaltworks.spindone",
+  },
+  animalgacha: {
+    id: "animalgacha",
+    image: "/projects/animal-gacha.webp",
+    category: "mobileGame",
+    productUrl: "https://animalgacha.com/",
+    appStoreUrl: "https://apps.apple.com/app/animal-gacha-wildlife-cards/id6770243368",
+    playStoreUrl: "https://play.google.com/store/apps/details?id=com.basaltworks.animalgacha",
+  },
+  dungeonquiz: {
+    id: "dungeonquiz",
+    image: "/projects/dungeonquiz.webp",
+    category: "mobileGame",
+    productUrl: "https://www.basaltworks.com/dungeon-quiz",
+    appStoreUrl: "https://apps.apple.com/app/dungeon-quiz-level-up/id6762605745",
+    playStoreUrl: "https://play.google.com/store/apps/details?id=com.basaltworks.dungeonquiz",
+  },
   gaelsantano: {
     id: "gaelsantano",
     image: "/projects/gaelsantano.webp",
@@ -60,13 +94,6 @@ export const PROJECT_METADATA: Record<ProjectId, ProjectMetadata> = {
     category: "client",
     demoUrl: "https://icoreven.com/",
   },
-  portfolio: {
-    id: "portfolio",
-    image: "/projects/portfolio.webp",
-    category: "personal",
-    demoUrl: "#",
-    codeUrl: "https://github.com/ericpastorm/mi-portfolio",
-  },
   sketchpad: {
     id: "sketchpad",
     image: "/projects/sketchpad.webp",
@@ -74,17 +101,25 @@ export const PROJECT_METADATA: Record<ProjectId, ProjectMetadata> = {
     demoUrl: "https://ericpastorm.github.io/sketchpad/",
     codeUrl: "https://github.com/ericpastorm/sketchpad",
   },
-  calculatorx: {
-    id: "calculatorx",
-    image: "/projects/calculatorx.webp",
-    category: "personal",
-    demoUrl: "https://ericpastorm.github.io/CalculatorX/",
-    codeUrl: "https://github.com/ericpastorm/CalculatorX/",
-  },
 };
 
 /** Ordered metadata without relying on object insertion order. */
 export const projects = PROJECT_IDS.map((id) => PROJECT_METADATA[id]);
+
+type ProjectLinks = Pick<
+  ProjectMetadata,
+  "demoUrl" | "productUrl" | "appStoreUrl" | "playStoreUrl" | "codeUrl"
+>;
+
+export function hasPublicProjectLink(project: ProjectLinks): boolean {
+  return Boolean(
+    project.demoUrl
+    || project.productUrl
+    || project.appStoreUrl
+    || project.playStoreUrl
+    || project.codeUrl,
+  );
+}
 
 export function getLocalizedProject(dict: Dictionary, id: ProjectId): LocalizedProject {
   const metadata = PROJECT_METADATA[id];

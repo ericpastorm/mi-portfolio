@@ -10,7 +10,11 @@ import {
   LayoutGrid,
   RefreshCw,
 } from "lucide-react";
-import { getLocalizedProjects, type ProjectId } from "@/data/projects";
+import {
+  getLocalizedProjects,
+  hasPublicProjectLink,
+  type ProjectId,
+} from "@/data/projects";
 import { ProjectPreview } from "@/components/ProjectPreview";
 import type { Dictionary } from "@/types";
 
@@ -71,7 +75,7 @@ export function ProjectsApp({ dict, onOpenProject }: ProjectsAppProps) {
         <div className="project-file-grid">
           {localizedProjects.map((project) => {
             const extension = project.image.endsWith(".webp") ? "WEBP" : "PNG";
-            const status = project.demoUrl || project.codeUrl
+            const status = hasPublicProjectLink(project)
               ? labels.publicStatus
               : labels.privateStatus;
 

@@ -11,7 +11,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1,
       alternates: {
         languages: {
+          en: `${baseUrl}/en`,
           es: `${baseUrl}/es`,
+          'x-default': `${baseUrl}/es`,
         },
       },
     },
@@ -23,6 +25,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
       alternates: {
         languages: {
           en: `${baseUrl}/en`,
+          es: `${baseUrl}/es`,
+          'x-default': `${baseUrl}/es`,
         },
       },
     },
