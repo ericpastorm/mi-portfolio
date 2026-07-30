@@ -5,6 +5,16 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Sun, Moon } from 'lucide-react';
 
+const updateFavicon = (currentTheme: 'dark' | 'light') => {
+  const iconUrl = currentTheme === 'light' ? '/icons/favicon-light.ico' : '/favicon.ico';
+  const favicons = document.querySelectorAll<HTMLLinkElement>('link[rel~="icon"]');
+  favicons.forEach((favicon) => {
+    if (favicon.type === 'image/x-icon' || favicon.href.endsWith('.ico')) {
+      favicon.href = iconUrl;
+    }
+  });
+};
+
 // Frutiger Aero es light-first: el tema por defecto es LIGHT.
 // La elección del usuario persiste en localStorage ('dark' | 'light').
 export const ThemeSwitcher = ({ ariaLabel }: { ariaLabel: string }) => {
@@ -20,16 +30,6 @@ export const ThemeSwitcher = ({ ariaLabel }: { ariaLabel: string }) => {
     setTheme(initialTheme);
     updateFavicon(initialTheme);
   }, []);
-
-  const updateFavicon = (currentTheme: 'dark' | 'light') => {
-    const iconUrl = currentTheme === 'light' ? '/icons/favicon-light.ico' : '/favicon.ico';
-    const favicons = document.querySelectorAll<HTMLLinkElement>('link[rel~="icon"]');
-    favicons.forEach((favicon) => {
-      if (favicon.type === 'image/x-icon' || favicon.href.endsWith('.ico')) {
-        favicon.href = iconUrl;
-      }
-    });
-  };
 
   useEffect(() => {
     if (theme === 'dark') {
