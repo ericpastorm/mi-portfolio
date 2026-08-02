@@ -4,10 +4,12 @@
 import { useCallback, useEffect, useReducer, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
+  Calculator,
   FileImage,
   FolderOpen,
   Mail,
   Monitor,
+  Palette,
   User,
   type LucideIcon,
 } from "lucide-react";
@@ -21,16 +23,25 @@ import { AboutApp } from "./AboutApp";
 import { ProjectsApp } from "./ProjectsApp";
 import { ProjectDetailApp } from "./ProjectDetailApp";
 import { ContactApp } from "./ContactApp";
+import { CalculatorApp } from "./internal-apps/calculator/CalculatorApp";
+import { SketchpadApp } from "./internal-apps/sketchpad/SketchpadApp";
 import { PROJECT_IDS, type ProjectId } from "@/data/projects";
 import type { Dictionary } from "@/types";
 
-export type BaseAppId = "welcome" | "about" | "projects" | "contact";
+export type BaseAppId =
+  | "welcome"
+  | "sketchpadApp"
+  | "calculatorApp"
+  | "about"
+  | "projects"
+  | "contact";
 export type ProjectWindowId = `project:${ProjectId}`;
 export type WindowId = BaseAppId | ProjectWindowId;
 
 interface AppDef {
   icon: LucideIcon;
-  titleKey: keyof Dictionary["navigation"];
+  desktopTitle: (dict: Dictionary) => string;
+  windowTitle: (dict: Dictionary) => string;
   width: number;
   height: number;
 }
@@ -43,13 +54,58 @@ interface WindowDef {
 }
 
 const BASE_APP_DEFS: Record<BaseAppId, AppDef> = {
-  welcome:  { icon: Monitor,    titleKey: "home",     width: 680, height: 620 },
-  about:    { icon: User,       titleKey: "about",    width: 880, height: 720 },
-  projects: { icon: FolderOpen, titleKey: "projects", width: 940, height: 680 },
-  contact:  { icon: Mail,       titleKey: "contact",  width: 820, height: 650 },
+  welcome: {
+    icon: Monitor,
+    desktopTitle: (dict) => dict.navigation.home,
+    windowTitle: (dict) => dict.navigation.home,
+    width: 680,
+    height: 620,
+  },
+  sketchpadApp: {
+    icon: Palette,
+    desktopTitle: (dict) => dict.internalApps.sketchpad.desktopLabel,
+    windowTitle: (dict) => dict.internalApps.sketchpad.windowTitle,
+    width: 1040,
+    height: 720,
+  },
+  calculatorApp: {
+    icon: Calculator,
+    desktopTitle: (dict) => dict.internalApps.calculator.desktopLabel,
+    windowTitle: (dict) => dict.internalApps.calculator.windowTitle,
+    width: 460,
+    height: 700,
+  },
+  about: {
+    icon: User,
+    desktopTitle: (dict) => dict.navigation.about,
+    windowTitle: (dict) => dict.navigation.about,
+    width: 880,
+    height: 720,
+  },
+  projects: {
+    icon: FolderOpen,
+    desktopTitle: (dict) => dict.navigation.projects,
+    windowTitle: (dict) => dict.navigation.projects,
+    width: 940,
+    height: 680,
+  },
+  contact: {
+    icon: Mail,
+    desktopTitle: (dict) => dict.navigation.contact,
+    windowTitle: (dict) => dict.navigation.contact,
+    width: 820,
+    height: 650,
+  },
 };
 
-const BASE_APP_IDS: BaseAppId[] = ["welcome", "about", "projects", "contact"];
+const BASE_APP_IDS: BaseAppId[] = [
+  "welcome",
+  "sketchpadApp",
+  "calculatorApp",
+  "about",
+  "projects",
+  "contact",
+];
 const TASKBAR_H = 48;
 
 const projectWindowId = (projectId: ProjectId): ProjectWindowId => `project:${projectId}`;
@@ -85,6 +141,8 @@ type WindowManagerAction =
 
 const initialWindows: WindowMap = {
   welcome: closedWindow(),
+  sketchpadApp: closedWindow(),
+  calculatorApp: closedWindow(),
   about: closedWindow(),
   projects: closedWindow(),
   contact: closedWindow(),
@@ -251,7 +309,12 @@ function viewportSize() {
 }
 
 function isMobileViewport() {
-  return typeof window !== "undefined" && window.innerWidth < 768;
+  if (typeof window === "undefined") return false;
+  const viewport = viewportSize();
+  return (
+    viewport.width < 768 ||
+    (viewport.width < 900 && viewport.height < 500)
+  );
 }
 
 function initialPosition(id: WindowId): { x: number; y: number } {
@@ -308,7 +371,7 @@ export function Desktop({ dict }: { dict: Dictionary }) {
           type: "viewport",
           width: viewport.width,
           height: viewport.height,
-          mobile: window.innerWidth < 768,
+          mobile: isMobileViewport(),
         });
       });
     };
@@ -334,6 +397,11 @@ export function Desktop({ dict }: { dict: Dictionary }) {
       mobile: isMobileViewport(),
     });
   }, []);
+
+  const openStartMenuApp = useCallback((id: string) => {
+    setStartOpen(false);
+    openWindow(id as BaseAppId);
+  }, [openWindow]);
 
   const openProject = useCallback((id: ProjectId) => {
     openWindow(projectWindowId(id));
@@ -403,7 +471,7 @@ export function Desktop({ dict }: { dict: Dictionary }) {
 
   const finishBoot = useCallback(() => setBooted(true), []);
 
-  const baseAppTitle = (id: BaseAppId) => dict.navigation[BASE_APP_DEFS[id].titleKey];
+  const baseAppTitle = (id: BaseAppId) => BASE_APP_DEFS[id].desktopTitle(dict);
 
   const windowDefinition = (id: WindowId): WindowDef => {
     if (isProjectWindowId(id)) {
@@ -419,20 +487,30 @@ export function Desktop({ dict }: { dict: Dictionary }) {
     const definition = BASE_APP_DEFS[id];
     return {
       icon: definition.icon,
-      title: baseAppTitle(id),
+      title: definition.windowTitle(dict),
       width: definition.width,
       height: definition.height,
     };
   };
 
-  const renderWindowBody = (id: WindowId, maximized: boolean) => {
+  const renderWindowBody = (id: WindowId, win: WindowVisualState) => {
     if (isProjectWindowId(id)) {
       return <ProjectDetailApp dict={dict} projectId={projectIdFromWindow(id)} />;
     }
 
     switch (id) {
       case "welcome":
-        return <WelcomeApp dict={dict} maximized={maximized} />;
+        return <WelcomeApp dict={dict} maximized={win.maximized} />;
+      case "sketchpadApp":
+        return <SketchpadApp copy={dict.internalApps.sketchpad.copy} />;
+      case "calculatorApp":
+        return (
+          <CalculatorApp
+            copy={dict.internalApps.calculator.copy}
+            active={manager.activeId === id && win.open && !win.minimized}
+            maximized={win.maximized}
+          />
+        );
       case "about":
         return <AboutApp dict={dict} />;
       case "projects":
@@ -505,6 +583,7 @@ export function Desktop({ dict }: { dict: Dictionary }) {
                   icon={BASE_APP_DEFS[id].icon}
                   label={baseAppTitle(id)}
                   selected={selectedIcon === id}
+                  featured={id === "sketchpadApp" || id === "calculatorApp"}
                   onSelect={() => setSelectedIcon(id)}
                   onOpen={() => openWindow(id)}
                 />
@@ -520,7 +599,11 @@ export function Desktop({ dict }: { dict: Dictionary }) {
                   ? "win-body-explorer"
                   : isProjectWindowId(id)
                     ? "win-body-project overflow-y-auto"
-                    : "";
+                    : id === "sketchpadApp"
+                      ? "win-body-internal-app win-body-sketchpad"
+                      : id === "calculatorApp"
+                        ? "win-body-internal-app win-body-calculator"
+                        : "";
 
                 return (
                   <OsWindow
@@ -540,7 +623,7 @@ export function Desktop({ dict }: { dict: Dictionary }) {
                     onToggleMaximize={() => toggleMaximizeWindow(id)}
                     onPositionChange={(x, y) => persistWindowPosition(id, x, y)}
                   >
-                    {renderWindowBody(id, win.maximized)}
+                    {renderWindowBody(id, win)}
                   </OsWindow>
                 );
               })}
@@ -550,19 +633,17 @@ export function Desktop({ dict }: { dict: Dictionary }) {
       </div>
 
       {/* Inicio solo muestra aplicaciones base; los proyectos viven en taskbar. */}
-      <AnimatePresence>
-        {startOpen && (
-          <StartMenu
-            apps={BASE_APP_IDS.map((id) => ({
-              id,
-              title: baseAppTitle(id),
-              icon: BASE_APP_DEFS[id].icon,
-            }))}
-            onOpenApp={(id) => openWindow(id as BaseAppId)}
-            onClose={() => setStartOpen(false)}
-          />
-        )}
-      </AnimatePresence>
+      {startOpen && (
+        <StartMenu
+          apps={BASE_APP_IDS.map((id) => ({
+            id,
+            title: baseAppTitle(id),
+            icon: BASE_APP_DEFS[id].icon,
+          }))}
+          onOpenApp={openStartMenuApp}
+          onClose={() => setStartOpen(false)}
+        />
+      )}
 
       <Taskbar
         apps={taskbarApps}

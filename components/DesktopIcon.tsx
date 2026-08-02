@@ -7,15 +7,25 @@ interface DesktopIconProps {
   icon: LucideIcon;
   label: string;
   selected: boolean;
+  featured?: boolean;
   onSelect: () => void;
   onOpen: () => void;
 }
 
-export function DesktopIcon({ icon: Icon, label, selected, onSelect, onOpen }: DesktopIconProps) {
+export function DesktopIcon({
+  icon: Icon,
+  label,
+  selected,
+  featured = false,
+  onSelect,
+  onOpen,
+}: DesktopIconProps) {
   return (
     <button
       type="button"
-      className={`desktop-icon ${selected ? "selected" : ""}`}
+      className={`desktop-icon ${selected ? "selected" : ""} ${
+        featured ? "desktop-icon-featured" : ""
+      }`}
       onClick={() => {
         onSelect();
         onOpen();

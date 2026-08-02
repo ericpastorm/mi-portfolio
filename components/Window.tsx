@@ -55,8 +55,12 @@ export function OsWindow({
   children,
 }: OsWindowProps) {
   const controls = useDragControls();
-  const x = useMotionValue(win.x);
-  const y = useMotionValue(win.y);
+  const x = useMotionValue(win.maximized ? 0 : win.x);
+  const y = useMotionValue(win.maximized ? 0 : win.y);
+  const isInternalApp = bodyClassName
+    .split(/\s+/)
+    .includes("win-body-internal-app");
+  const isImmediateForeground = win.maximized && isInternalApp;
 
   useEffect(() => {
     animate(x, win.maximized ? 0 : win.x, { duration: 0.22, ease: "easeOut" });
@@ -69,10 +73,14 @@ export function OsWindow({
       aria-label={title}
       aria-hidden={win.minimized}
       inert={win.minimized ? true : undefined}
-      initial={{ opacity: 0, scale: 0.92 }}
+      initial={
+        isImmediateForeground
+          ? { opacity: 1, scale: 1 }
+          : { opacity: 0, scale: 0.92 }
+      }
       animate={{
         opacity: win.minimized ? 0 : 1,
-        scale: win.minimized ? 0.9 : 1,
+        scale: isImmediateForeground ? 1 : win.minimized ? 0.9 : 1,
       }}
       exit={{ opacity: 0, scale: 0.92 }}
       transition={{ duration: 0.18 }}
@@ -85,7 +93,11 @@ export function OsWindow({
       onDragEnd={() => onPositionChange(x.get(), y.get())}
       onPointerDown={onFocus}
       className={`os-window window-panel ${active ? "os-window-active" : ""} ${
-        win.maximized ? "h-full w-full rounded-none" : "max-h-full rounded-xl"
+        isInternalApp ? "os-window-internal-app" : ""
+      } ${
+        win.maximized
+          ? "os-window-maximized h-full w-full rounded-none"
+          : "max-h-full rounded-xl"
       }`}
       style={{
         x,

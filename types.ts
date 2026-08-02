@@ -1,6 +1,8 @@
 // types.ts
 
 import type { ProjectCategory, ProjectId } from "@/data/projects";
+import type { CalculatorCopy } from "@/components/internal-apps/calculator/CalculatorApp";
+import type { SketchpadCopy } from "@/components/internal-apps/sketchpad/SketchpadApp";
 
 /** Localized copy stored under projects.items in each dictionary. */
 export interface ProjectItem {
@@ -23,6 +25,13 @@ export interface LocalizedProject extends ProjectItem {
   appStoreUrl?: string;
   playStoreUrl?: string;
   codeUrl?: string;
+}
+
+/** Localized registration and in-app copy for a built-in desktop utility. */
+export interface InternalAppDictionary<TCopy> {
+  desktopLabel: string;
+  windowTitle: string;
+  copy: TCopy;
 }
 
 // Ahora, definimos la estructura completa de nuestro diccionario de traducciones
@@ -90,6 +99,10 @@ export interface Dictionary {
       message: string;
       send: string;
     };
+  };
+  internalApps: {
+    sketchpad: InternalAppDictionary<SketchpadCopy>;
+    calculator: InternalAppDictionary<CalculatorCopy>;
   };
   footer: {
     designed: string;

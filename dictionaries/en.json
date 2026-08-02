@@ -135,6 +135,76 @@
       "send": "Send Message"
     }
   },
+  "internalApps": {
+    "sketchpad": {
+      "desktopLabel": "Sketchpad",
+      "windowTitle": "Sketchpad.exe",
+      "copy": {
+        "title": "Pixel workshop",
+        "description": "Draw one cell at a time, tune the grid, then save your work as a PNG.",
+        "canvasLabel": "Sketchpad drawing canvas",
+        "canvasInstructions": "Drag to draw. The fill tool colors the whole canvas.",
+        "canvasFallback": "Your browser does not support the drawing canvas.",
+        "toolsLegend": "Tool rail",
+        "pencilTool": "Pencil",
+        "eraserTool": "Eraser",
+        "fillTool": "Fill",
+        "colorsLegend": "Color bank",
+        "selectColorLabel": "Select color",
+        "randomColorLabel": "Random",
+        "brushSizeLabel": "Brush size",
+        "showGridLines": "Show grid",
+        "hideGridLines": "Hide grid",
+        "gridSizeLabel": "Grid size",
+        "gridSizeHint": "1–100 cells. Applying a size starts a blank canvas.",
+        "applyGridSize": "Apply",
+        "invalidGridSize": "Enter a whole number from 1 to 100.",
+        "clearCanvas": "Clear",
+        "clearDialogTitle": "Clear this drawing?",
+        "clearDialogDescription": "Every painted cell will be erased. This cannot be undone.",
+        "cancelClear": "Keep drawing",
+        "confirmClear": "Clear canvas",
+        "exportPng": "Export PNG",
+        "exportingStatus": "Preparing PNG…",
+        "exportSuccessStatus": "PNG saved.",
+        "exportErrorStatus": "The PNG could not be saved.",
+        "drawingRestoredStatus": "Saved drawing restored.",
+        "gridResizedStatus": "New blank grid ready.",
+        "canvasClearedStatus": "Canvas cleared.",
+        "storageErrorStatus": "Local drawing storage is unavailable."
+      }
+    },
+    "calculator": {
+      "desktopLabel": "Calculator",
+      "windowTitle": "Calculator.exe",
+      "copy": {
+        "title": "Pocket calculator",
+        "calculatorMode": "CALC",
+        "practiceMode": "PRACTICE",
+        "displayLabel": "Calculator display",
+        "latestOperationLabel": "Latest operation",
+        "clearLabel": "Clear calculation",
+        "deleteLabel": "Delete last digit",
+        "toggleSignLabel": "Toggle positive or negative",
+        "percentLabel": "Percent",
+        "decimalLabel": "Decimal point",
+        "equalsLabel": "Calculate result",
+        "addLabel": "Add",
+        "subtractLabel": "Subtract",
+        "multiplyLabel": "Multiply",
+        "divideLabel": "Divide",
+        "practiceStartLabel": "Start practice",
+        "practiceStopLabel": "Stop practice",
+        "scoreLabel": "Streak",
+        "answerLabel": "Practice answer",
+        "correctFeedback": "Correct — nice work!",
+        "incorrectFeedback": "Not quite.",
+        "expectedAnswerLabel": "Answer",
+        "divisionByZeroError": "Cannot divide by zero",
+        "numericOverflowError": "Number is too large"
+      }
+    }
+  },
   "footer": {
     "designed": "Designed and developed by Eric Pastor",
     "rights": "All rights reserved."

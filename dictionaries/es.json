@@ -135,6 +135,76 @@
       "send": "Enviar Mensaje"
     }
   },
+  "internalApps": {
+    "sketchpad": {
+      "desktopLabel": "Sketchpad",
+      "windowTitle": "Sketchpad.exe",
+      "copy": {
+        "title": "Taller de píxeles",
+        "description": "Dibuja celda a celda, ajusta la cuadrícula y guarda tu obra en PNG.",
+        "canvasLabel": "Lienzo de dibujo de Sketchpad",
+        "canvasInstructions": "Arrastra para dibujar. El bote de pintura colorea todo el lienzo.",
+        "canvasFallback": "Tu navegador no admite el lienzo de dibujo.",
+        "toolsLegend": "Panel de herramientas",
+        "pencilTool": "Lápiz",
+        "eraserTool": "Goma",
+        "fillTool": "Relleno",
+        "colorsLegend": "Banco de color",
+        "selectColorLabel": "Elegir color",
+        "randomColorLabel": "Aleatorio",
+        "brushSizeLabel": "Tamaño del pincel",
+        "showGridLines": "Mostrar cuadrícula",
+        "hideGridLines": "Ocultar cuadrícula",
+        "gridSizeLabel": "Tamaño de cuadrícula",
+        "gridSizeHint": "De 1 a 100 celdas. Aplicar un tamaño crea un lienzo vacío.",
+        "applyGridSize": "Aplicar",
+        "invalidGridSize": "Introduce un número entero del 1 al 100.",
+        "clearCanvas": "Limpiar",
+        "clearDialogTitle": "¿Limpiar este dibujo?",
+        "clearDialogDescription": "Se borrarán todas las celdas pintadas. Esta acción no se puede deshacer.",
+        "cancelClear": "Seguir dibujando",
+        "confirmClear": "Limpiar lienzo",
+        "exportPng": "Exportar PNG",
+        "exportingStatus": "Preparando PNG…",
+        "exportSuccessStatus": "PNG guardado.",
+        "exportErrorStatus": "No se ha podido guardar el PNG.",
+        "drawingRestoredStatus": "Dibujo guardado restaurado.",
+        "gridResizedStatus": "Nueva cuadrícula vacía lista.",
+        "canvasClearedStatus": "Lienzo limpio.",
+        "storageErrorStatus": "El almacenamiento local del dibujo no está disponible."
+      }
+    },
+    "calculator": {
+      "desktopLabel": "Calculadora",
+      "windowTitle": "Calculator.exe",
+      "copy": {
+        "title": "Calculadora de bolsillo",
+        "calculatorMode": "CÁLCULO",
+        "practiceMode": "PRÁCTICA",
+        "displayLabel": "Pantalla de la calculadora",
+        "latestOperationLabel": "Última operación",
+        "clearLabel": "Borrar cálculo",
+        "deleteLabel": "Borrar último dígito",
+        "toggleSignLabel": "Cambiar entre positivo y negativo",
+        "percentLabel": "Porcentaje",
+        "decimalLabel": "Coma decimal",
+        "equalsLabel": "Calcular resultado",
+        "addLabel": "Sumar",
+        "subtractLabel": "Restar",
+        "multiplyLabel": "Multiplicar",
+        "divideLabel": "Dividir",
+        "practiceStartLabel": "Empezar práctica",
+        "practiceStopLabel": "Terminar práctica",
+        "scoreLabel": "Racha",
+        "answerLabel": "Respuesta de práctica",
+        "correctFeedback": "¡Correcto, muy bien!",
+        "incorrectFeedback": "Casi.",
+        "expectedAnswerLabel": "Respuesta",
+        "divisionByZeroError": "No se puede dividir entre cero",
+        "numericOverflowError": "El número es demasiado grande"
+      }
+    }
+  },
   "footer": {
     "designed": "Diseñado y desarrollado por Eric Pastor",
     "rights": "Todos los derechos reservados."
