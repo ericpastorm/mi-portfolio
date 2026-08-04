@@ -216,6 +216,22 @@
     "restore": "Restaurar",
     "close": "Cerrar",
     "taskbar": "Barra de tareas del escritorio",
-    "clock": "Reloj"
+    "clock": "Reloj",
+    "userName": {
+      "change": "Cambiar nombre de usuario",
+      "dialogTitle": "Cambiar nombre de usuario",
+      "dialogDescription": "Escribe el nombre que aparece en la cabecera del menú Inicio. Las iniciales del avatar se actualizan solas.",
+      "nameLabel": "Nombre de usuario",
+      "placeholder": "Escribe un nombre…",
+      "save": "Guardar",
+      "cancel": "Cancelar"
+    },
+    "contextMenu": {
+      "menuLabel": "Acciones del escritorio",
+      "changeUserName": "Cambiar nombre de usuario…",
+      "themeToDark": "Cambiar a tema oscuro",
+      "themeToLight": "Cambiar a tema claro",
+      "resetIconPositions": "Restablecer posición de iconos"
+    }
   }
 }

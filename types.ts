@@ -116,5 +116,21 @@ export interface Dictionary {
     close: string;
     taskbar: string;
     clock: string;
+    userName: {
+      change: string;
+      dialogTitle: string;
+      dialogDescription: string;
+      nameLabel: string;
+      placeholder: string;
+      save: string;
+      cancel: string;
+    };
+    contextMenu: {
+      menuLabel: string;
+      changeUserName: string;
+      themeToDark: string;
+      themeToLight: string;
+      resetIconPositions: string;
+    };
   };
 }

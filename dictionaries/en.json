@@ -216,6 +216,22 @@
     "restore": "Restore",
     "close": "Close",
     "taskbar": "Desktop taskbar",
-    "clock": "Clock"
+    "clock": "Clock",
+    "userName": {
+      "change": "Change user name",
+      "dialogTitle": "Change user name",
+      "dialogDescription": "Enter the name shown in the Start menu header. The avatar initials update automatically.",
+      "nameLabel": "User name",
+      "placeholder": "Type a name…",
+      "save": "Save",
+      "cancel": "Cancel"
+    },
+    "contextMenu": {
+      "menuLabel": "Desktop actions",
+      "changeUserName": "Change user name…",
+      "themeToDark": "Switch to dark theme",
+      "themeToLight": "Switch to light theme",
+      "resetIconPositions": "Reset icon positions"
+    }
   }
 }

@@ -12,11 +12,23 @@ export interface StartMenuApp {
 
 interface StartMenuProps {
   apps: StartMenuApp[];
+  userName: string;
+  initials: string;
+  renameLabel: string;
   onOpenApp: (id: string) => void;
+  onRename: () => void;
   onClose: () => void;
 }
 
-export function StartMenu({ apps, onOpenApp, onClose }: StartMenuProps) {
+export function StartMenu({
+  apps,
+  userName,
+  initials,
+  renameLabel,
+  onOpenApp,
+  onRename,
+  onClose,
+}: StartMenuProps) {
   return (
     <>
       {/* Backdrop para cerrar al hacer clic fuera */}
@@ -31,8 +43,16 @@ export function StartMenu({ apps, onOpenApp, onClose }: StartMenuProps) {
         aria-label="Start menu"
       >
         <div className="start-menu-header">
-          <span className="start-menu-avatar" aria-hidden="true">EP</span>
-          <span className="start-menu-name">Eric Pastor</span>
+          <span className="start-menu-avatar" aria-hidden="true">{initials}</span>
+          <button
+            type="button"
+            className="start-menu-name-btn"
+            onClick={onRename}
+            title={renameLabel}
+            aria-label={`${userName} — ${renameLabel}`}
+          >
+            <span className="start-menu-name">{userName}</span>
+          </button>
         </div>
         <div className="start-menu-items">
           {apps.map((app) => (
