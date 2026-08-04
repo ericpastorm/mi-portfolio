@@ -3,11 +3,11 @@
 
 import { useEffect, useRef, useState } from "react";
 import { UserRoundPen, X } from "lucide-react";
-import type { Dictionary } from "@/types";
+import type { RenameDialogCopy } from "@/types";
 
 interface UserNameDialogProps {
   initialName: string;
-  copy: Dictionary["os"]["userName"];
+  copy: RenameDialogCopy;
   onSave: (name: string) => void;
   onCancel: () => void;
 }

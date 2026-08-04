@@ -34,6 +34,17 @@ export interface InternalAppDictionary<TCopy> {
   copy: TCopy;
 }
 
+/** Localized copy shared by the user-name and app-name rename dialogs. */
+export interface RenameDialogCopy {
+  change: string;
+  dialogTitle: string;
+  dialogDescription: string;
+  nameLabel: string;
+  placeholder: string;
+  save: string;
+  cancel: string;
+}
+
 // Ahora, definimos la estructura completa de nuestro diccionario de traducciones
 export interface Dictionary {
   metadata?: {
@@ -116,15 +127,8 @@ export interface Dictionary {
     close: string;
     taskbar: string;
     clock: string;
-    userName: {
-      change: string;
-      dialogTitle: string;
-      dialogDescription: string;
-      nameLabel: string;
-      placeholder: string;
-      save: string;
-      cancel: string;
-    };
+    userName: RenameDialogCopy;
+    appName: RenameDialogCopy;
     contextMenu: {
       menuLabel: string;
       changeUserName: string;

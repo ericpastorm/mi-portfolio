@@ -226,6 +226,15 @@
       "save": "Save",
       "cancel": "Cancel"
     },
+    "appName": {
+      "change": "Change app name…",
+      "dialogTitle": "Change app name",
+      "dialogDescription": "Enter the name shown on the desktop icon, Start menu, window title bar and taskbar for this app.",
+      "nameLabel": "App name",
+      "placeholder": "Type a name…",
+      "save": "Save",
+      "cancel": "Cancel"
+    },
     "contextMenu": {
       "menuLabel": "Desktop actions",
       "changeUserName": "Change user name…",

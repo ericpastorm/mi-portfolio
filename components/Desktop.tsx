@@ -46,13 +46,18 @@ import {
   DEFAULT_USER_NAME,
   ICON_DRAG_THRESHOLD,
   MARQUEE_THRESHOLD,
+  clearAppName,
   clearIconPositions,
   clearUserName,
+  defaultGridIconPosition,
+  loadAppNames,
   loadIconPositions,
   loadUserName,
+  saveAppName,
   saveIconPositions,
   saveUserName,
   userInitials,
+  type AppNames,
   type DesktopIconPositions,
 } from "@/lib/desktopPersistence";
 
@@ -384,8 +389,15 @@ export function Desktop({ dict }: { dict: Dictionary }) {
   const [iconPositions, setIconPositions] = useState<DesktopIconPositions | null>(null);
   const [userName, setUserName] = useState(DEFAULT_USER_NAME);
   const [initials, setInitials] = useState(userInitials(DEFAULT_USER_NAME));
-  const [renameOpen, setRenameOpen] = useState(false);
-  const [contextMenu, setContextMenu] = useState<{ x: number; y: number } | null>(null);
+  const [appNames, setAppNames] = useState<AppNames>({});
+  const [renameTarget, setRenameTarget] = useState<
+    { kind: "user" } | { kind: "app"; id: BaseAppId } | null
+  >(null);
+  const [contextMenu, setContextMenu] = useState<{
+    x: number;
+    y: number;
+    iconId?: BaseAppId;
+  } | null>(null);
   const [isDark, setIsDark] = useState(false);
   const [marquee, setMarquee] = useState<{
     x0: number;
@@ -475,11 +487,27 @@ export function Desktop({ dict }: { dict: Dictionary }) {
     setInitials(userInitials(stored));
   }, []);
 
+  // Nombres de aplicación persistidos (renombrados por el usuario).
+  useEffect(() => {
+    const stored = loadAppNames();
+    if (Object.keys(stored).length > 0) setAppNames(stored);
+  }, []);
+
   // Posiciones de iconos persistidas: se restauran antes del primer render
   // de iconos, así la primera visita con datos guardados ya sale en modo libre.
+  // Si faltan iconos (datos antiguos o a medio guardar), se siembran con la
+  // fórmula de la rejilla por defecto para que nunca colapsen en (0,0).
   useEffect(() => {
     const stored = loadIconPositions();
     if (stored) {
+      const missing = BASE_APP_IDS.filter((id) => !stored[id]);
+      if (missing.length > 0) {
+        const viewport = viewportSize();
+        for (const id of missing) {
+          stored[id] = defaultGridIconPosition(BASE_APP_IDS.indexOf(id), viewport);
+        }
+        saveIconPositions(stored);
+      }
       iconPositionsRef.current = stored;
       setIconPositions(stored);
     }
@@ -628,8 +656,25 @@ export function Desktop({ dict }: { dict: Dictionary }) {
       if (!drag.moved) {
         drag.moved = true;
         setDraggingIcon(drag.id);
-        // El cambio de flujo a libre es sin salto: el icono queda donde estaba.
+        // El cambio de flujo a libre es sin salto para TODOS los iconos:
+        // se siembran las posiciones de los que falten midiendo su posición
+        // actual en pantalla (los que ya tengan guardada se conservan).
+        const workspace = workspaceRef.current;
+        const size = iconElementSize(drag.id);
         const positions = { ...(iconPositionsRef.current ?? {}) };
+        if (workspace) {
+          const wsRect = workspace.getBoundingClientRect();
+          for (const id of BASE_APP_IDS) {
+            if (positions[id]) continue;
+            const el = iconRefs.current[id];
+            if (!el) continue;
+            const rect = el.getBoundingClientRect();
+            positions[id] = {
+              x: Math.round(rect.left - wsRect.left),
+              y: Math.round(rect.top - wsRect.top),
+            };
+          }
+        }
         positions[drag.id] = clampIconPoint(drag.startLeft, drag.startTop, size.width, size.height);
         iconPositionsRef.current = positions;
         setIconPositions(positions);
@@ -823,10 +868,10 @@ export function Desktop({ dict }: { dict: Dictionary }) {
     if (iconId) {
       setSelectedIcons((prev) => (prev.includes(iconId) ? prev : [...prev, iconId]));
     }
-    setContextMenu({ x: event.clientX, y: event.clientY });
+    setContextMenu({ x: event.clientX, y: event.clientY, ...(iconId ? { iconId } : {}) });
   }, []);
 
-  /* ============ NOMBRE DE USUARIO ============ */
+  /* ============ NOMBRES DE USUARIO Y DE APLICACIÓN ============ */
 
   const handleSaveUserName = useCallback((name: string) => {
     const normalized = name.trim();
@@ -839,8 +884,28 @@ export function Desktop({ dict }: { dict: Dictionary }) {
       setUserName(normalized);
       setInitials(userInitials(normalized));
     }
-    setRenameOpen(false);
+    setRenameTarget(null);
   }, []);
+
+  const handleSaveAppName = useCallback(
+    (id: BaseAppId, name: string) => {
+      const normalized = name.trim();
+      const defaultValue = BASE_APP_DEFS[id].desktopTitle(dict);
+      if (normalized.length === 0 || normalized === defaultValue) {
+        clearAppName(id);
+        setAppNames((prev) => {
+          const next = { ...prev };
+          delete next[id];
+          return next;
+        });
+      } else {
+        saveAppName(id, normalized);
+        setAppNames((prev) => ({ ...prev, [id]: normalized }));
+      }
+      setRenameTarget(null);
+    },
+    [dict],
+  );
 
   // Clic en taskbar: enfocar/restaurar, o minimizar si ya está activa.
   const handleTaskClick = useCallback((id: WindowId) => {
@@ -858,8 +923,8 @@ export function Desktop({ dict }: { dict: Dictionary }) {
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
       if (event.key !== "Escape") return;
-      if (renameOpen) {
-        setRenameOpen(false);
+      if (renameTarget) {
+        setRenameTarget(null);
       } else if (contextMenu) {
         setContextMenu(null);
       } else if (startOpen) {
@@ -872,11 +937,14 @@ export function Desktop({ dict }: { dict: Dictionary }) {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [renameOpen, contextMenu, startOpen, selectedIcons, manager.activeId, closeWindow]);
+  }, [renameTarget, contextMenu, startOpen, selectedIcons, manager.activeId, closeWindow]);
 
   const finishBoot = useCallback(() => setBooted(true), []);
 
   const baseAppTitle = (id: BaseAppId) => BASE_APP_DEFS[id].desktopTitle(dict);
+
+  /** Nombre visible de una app base: el renombrado si existe, si no el del diccionario. */
+  const appDisplayName = (id: BaseAppId) => appNames[id] ?? baseAppTitle(id);
 
   const windowDefinition = (id: WindowId): WindowDef => {
     if (isProjectWindowId(id)) {
@@ -892,7 +960,7 @@ export function Desktop({ dict }: { dict: Dictionary }) {
     const definition = BASE_APP_DEFS[id];
     return {
       icon: definition.icon,
-      title: definition.windowTitle(dict),
+      title: appDisplayName(id),
       width: definition.width,
       height: definition.height,
     };
@@ -938,16 +1006,31 @@ export function Desktop({ dict }: { dict: Dictionary }) {
     }];
   });
 
+  // El menú es contextual: sobre un icono ofrece renombrar esa aplicación
+  // (aunque haya una multiselección, el objetivo es el icono pulsado);
+  // sobre el vacío, renombrar al usuario.
+  const renameTargetId = contextMenu?.iconId ?? null;
+
   const contextMenuItems: DesktopContextMenuItem[] = [
-    {
-      key: "rename-user",
-      label: dict.os.contextMenu.changeUserName,
-      icon: UserRoundPen,
-      onSelect: () => {
-        setContextMenu(null);
-        setRenameOpen(true);
-      },
-    },
+    renameTargetId
+      ? {
+          key: "rename-app",
+          label: dict.os.appName.change,
+          icon: UserRoundPen,
+          onSelect: () => {
+            setContextMenu(null);
+            setRenameTarget({ kind: "app", id: renameTargetId });
+          },
+        }
+      : {
+          key: "rename-user",
+          label: dict.os.contextMenu.changeUserName,
+          icon: UserRoundPen,
+          onSelect: () => {
+            setContextMenu(null);
+            setRenameTarget({ kind: "user" });
+          },
+        },
     {
       key: "toggle-theme",
       label: isDark ? dict.os.contextMenu.themeToLight : dict.os.contextMenu.themeToDark,
@@ -1045,7 +1128,7 @@ export function Desktop({ dict }: { dict: Dictionary }) {
                     }}
                     iconId={id}
                     icon={BASE_APP_DEFS[id].icon}
-                    label={baseAppTitle(id)}
+                    label={appDisplayName(id)}
                     selected={isIconSelected(id)}
                     featured={id === "sketchpadApp" || id === "calculatorApp"}
                     dragging={draggingIcon === id}
@@ -1128,7 +1211,7 @@ export function Desktop({ dict }: { dict: Dictionary }) {
         <StartMenu
           apps={BASE_APP_IDS.map((id) => ({
             id,
-            title: baseAppTitle(id),
+            title: appDisplayName(id),
             icon: BASE_APP_DEFS[id].icon,
           }))}
           userName={userName}
@@ -1137,7 +1220,7 @@ export function Desktop({ dict }: { dict: Dictionary }) {
           onOpenApp={openStartMenuApp}
           onRename={() => {
             setStartOpen(false);
-            setRenameOpen(true);
+            setRenameTarget({ kind: "user" });
           }}
           onClose={() => setStartOpen(false)}
         />
@@ -1153,12 +1236,21 @@ export function Desktop({ dict }: { dict: Dictionary }) {
         />
       )}
 
-      {renameOpen && (
+      {renameTarget?.kind === "user" && (
         <UserNameDialog
           initialName={userName}
           copy={dict.os.userName}
           onSave={handleSaveUserName}
-          onCancel={() => setRenameOpen(false)}
+          onCancel={() => setRenameTarget(null)}
+        />
+      )}
+
+      {renameTarget?.kind === "app" && (
+        <UserNameDialog
+          initialName={appDisplayName(renameTarget.id)}
+          copy={dict.os.appName}
+          onSave={(name) => handleSaveAppName(renameTarget.id, name)}
+          onCancel={() => setRenameTarget(null)}
         />
       )}
 

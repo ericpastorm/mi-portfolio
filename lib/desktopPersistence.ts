@@ -4,6 +4,7 @@
 
 export const DESKTOP_ICONS_KEY = "portfolio:desktop-icons:v1";
 export const USER_NAME_KEY = "portfolio:user-name:v1";
+export const APP_NAMES_KEY = "portfolio:app-names:v1";
 
 export const DEFAULT_USER_NAME = "Eric Pastor";
 
@@ -27,6 +28,13 @@ interface IconPositionsPayload {
 interface UserNamePayload {
   version: 1;
   name: string;
+}
+
+export type AppNames = Record<string, string>;
+
+interface AppNamesPayload {
+  version: 1;
+  names: Record<string, string>;
 }
 
 export function loadIconPositions(): DesktopIconPositions | null {
@@ -114,4 +122,99 @@ export function userInitials(name: string): string {
   const last = words.length > 1 ? words[words.length - 1].charAt(0) : "";
   const initials = (first + last).toUpperCase();
   return initials || "EP";
+}
+
+/* ============ NOMBRES PERSONALIZADOS DE APLICACIONES ============ */
+
+/** Nombres personalizados por aplicación; las ausentes usan el diccionario. */
+export function loadAppNames(): AppNames {
+  if (typeof window === "undefined") return {};
+  try {
+    const raw = window.localStorage.getItem(APP_NAMES_KEY);
+    if (!raw) return {};
+    const payload = JSON.parse(raw) as Partial<AppNamesPayload>;
+    if (payload?.version !== 1 || !payload.names) return {};
+    const names: AppNames = {};
+    for (const [id, name] of Object.entries(payload.names)) {
+      if (typeof name === "string" && name.trim().length > 0) {
+        names[id] = name.trim();
+      }
+    }
+    return names;
+  } catch {
+    return {};
+  }
+}
+
+/** Guarda el nombre de una app; un nombre vacío la elimina. */
+export function saveAppName(id: string, name: string): void {
+  if (typeof window === "undefined") return;
+  const normalized = name.trim();
+  try {
+    const names = loadAppNames();
+    if (normalized.length === 0) {
+      delete names[id];
+    } else {
+      names[id] = normalized;
+    }
+    if (Object.keys(names).length === 0) {
+      window.localStorage.removeItem(APP_NAMES_KEY);
+    } else {
+      window.localStorage.setItem(
+        APP_NAMES_KEY,
+        JSON.stringify({ version: 1, names } satisfies AppNamesPayload),
+      );
+    }
+  } catch {
+    // noop
+  }
+}
+
+export function clearAppName(id: string): void {
+  if (typeof window === "undefined") return;
+  try {
+    const names = loadAppNames();
+    delete names[id];
+    if (Object.keys(names).length === 0) {
+      window.localStorage.removeItem(APP_NAMES_KEY);
+    } else {
+      window.localStorage.setItem(
+        APP_NAMES_KEY,
+        JSON.stringify({ version: 1, names } satisfies AppNamesPayload),
+      );
+    }
+  } catch {
+    // noop
+  }
+}
+
+/* ============ POSICIÓN POR DEFECTO EN LA REJILLA ============ */
+
+/** Posición del icono `index` en el layout por defecto (espejo del CSS):
+ *  escritorio → columna a la izquierda (top 20, left 16, gap 22, alto ~78);
+ *  teléfono vertical (<768px) → 3 columnas (top 10, left/right 6, gaps 7/5,
+ *  alto mínimo 76). Se usa para sembrar iconos que faltan en posiciones
+ *  guardadas para que nunca colapsen en (0,0). */
+export function defaultGridIconPosition(
+  index: number,
+  viewport: { width: number; height: number },
+): DesktopIconPosition {
+  if (viewport.width < 768) {
+    const colGap = 5;
+    const rowGap = 7;
+    const iconHeight = 76;
+    const cellWidth = (viewport.width - 12 - 2 * colGap) / 3;
+    const col = index % 3;
+    const row = Math.floor(index / 3);
+    return {
+      x: Math.round(6 + col * (cellWidth + colGap)),
+      y: Math.round(10 + row * (iconHeight + rowGap)),
+    };
+  }
+  const iconHeight = 78;
+  const gap = 22;
+  return {
+    x: 16,
+    y: Math.round(20 + index * (iconHeight + gap)),
+  };
 }

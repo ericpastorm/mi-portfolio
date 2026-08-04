@@ -226,6 +226,15 @@
       "save": "Guardar",
       "cancel": "Cancelar"
     },
+    "appName": {
+      "change": "Cambiar nombre de la aplicación…",
+      "dialogTitle": "Cambiar nombre de la aplicación",
+      "dialogDescription": "Escribe el nombre que aparece en el icono del escritorio, Inicio, la barra de título de la ventana y la barra de tareas de esta aplicación.",
+      "nameLabel": "Nombre de la aplicación",
+      "placeholder": "Escribe un nombre…",
+      "save": "Guardar",
+      "cancel": "Cancelar"
+    },
     "contextMenu": {
       "menuLabel": "Acciones del escritorio",
       "changeUserName": "Cambiar nombre de usuario…",
